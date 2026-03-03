@@ -1,6 +1,8 @@
+import { UserType } from "./user-type.enum";
+
 export type User = {
+  name: string;
   email: string;
-  avatarPath: string;
-  firstname: string;
-  lastname: string;
-}
+  avatar?: string;
+  type: UserType;
+};

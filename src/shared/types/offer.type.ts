@@ -1,14 +1,24 @@
-import { OfferType } from './offer-type.enum.js';
-import { Category } from './category.type.js';
 import { User } from './user.type.js';
+import { HousingType } from './housing-type.enum.js';
+import { AmenityType } from './amenity-type.enum.js';
+import { Location } from './location.type.js';
 
 export type Offer = {
   title: string;
   description: string;
-  postDate: Date;
-  image: string;
-  type: OfferType
+  publishDate: Date;
+  city: string;
+  previewImage: string;
+  housingImages: string[]; // TODO [string, string, string, string, string, string] ??
+  isPremium: boolean;
+  isFavorite: boolean;
+  rating: number;
+  housingType: HousingType;
+  roomsCount: number;
+  guestsCount: number;
   price: number;
-  categories: Category[];
-  user: User;
-}
+  amenities: AmenityType[];
+  author: User;
+  commentsCount: number,
+  location: Location;
+};
