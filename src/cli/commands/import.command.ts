@@ -20,8 +20,8 @@ export class ImportCommand implements Command {
         throw err;
       }
 
-      console.error(`${chalk.red("Can't import data from file:")} ${filename}`);
-      console.error(`${chalk.red("Details:")} ${err.message}`);
+      console.error(`${chalk.red('Can\'t import data from file:')} ${filename}`);
+      console.error(`${chalk.red('Details:')} ${err.message}`);
     }
   }
 }
