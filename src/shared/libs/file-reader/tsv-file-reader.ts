@@ -31,28 +31,28 @@ export class TSVFileReader implements FileReader {
       .filter((row) => row.trim().length > 0)
       .map((line) => line.split('\t'))
       .map(([title, description, createdDate, city, previewImage, images, isPremium, isFavorite, rating, housingType, roomsCount, guestsCount, price, amenities,
-      name, email, avatarPath, userType, location]) => ({
-      title,
-      description,
-      publishDate: new Date(createdDate),
-      city,
-      previewImage,
-      housingImages: images.split(';'),
-      isPremium: parseBoolean(isPremium),
-      isFavorite: parseBoolean(isFavorite),
-      rating: parseFloat(rating),
-      housingType: HousingType[housingType as keyof typeof HousingType], // TODO сделать маппинг строк в энумы
-      roomsCount: parseInt(roomsCount),
-      guestsCount: parseInt(guestsCount),
-      price: parseInt(price),
-      amenities: amenities.split(';').map((convenience) => AmenityType[convenience as keyof typeof AmenityType]),
-      author: {
-        name: name,
-        email: email,
-        avatar: avatarPath || undefined,
-        type: UserType[userType as keyof typeof UserType]
-      },
-      commentsCount: 0,
-      location: parseLocation(location)}));
+        name, email, avatarPath, userType, location]) => ({
+        title,
+        description,
+        publishDate: new Date(createdDate),
+        city,
+        previewImage,
+        housingImages: images.split(';'),
+        isPremium: parseBoolean(isPremium),
+        isFavorite: parseBoolean(isFavorite),
+        rating: parseFloat(rating),
+        housingType: HousingType[housingType as keyof typeof HousingType], // TODO сделать маппинг строк в энумы
+        roomsCount: parseInt(roomsCount),
+        guestsCount: parseInt(guestsCount),
+        price: parseInt(price),
+        amenities: amenities.split(';').map((convenience) => AmenityType[convenience as keyof typeof AmenityType]),
+        author: {
+          name: name,
+          email: email,
+          avatar: avatarPath || undefined,
+          type: UserType[userType as keyof typeof UserType]
+        },
+        commentsCount: 0,
+        location: parseLocation(location)}));
   }
 }
