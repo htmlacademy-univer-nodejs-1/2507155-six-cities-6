@@ -15,6 +15,7 @@ export class HelpCommand implements Command {
             ${chalk.yellow('--version')}:                   ${chalk.gray('# выводит номер версии')}
             ${chalk.yellow('--help')}:                      ${chalk.gray('# печатает этот текст')}
             ${chalk.yellow('--import <path>')}:             ${chalk.gray('# импортирует данные из TSV')}
+            ${chalk.yellow('--generate <n> <path> <url>')}: ${chalk.gray('# генерирует произвольное количество тестовых данных')}
     `);
   }
 }
