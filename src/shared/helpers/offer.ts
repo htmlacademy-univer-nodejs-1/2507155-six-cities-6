@@ -2,7 +2,7 @@ import { AmenityType, HousingType, Location, Offer, UserType } from '../types/in
 
 export function createOffer(offerData: string): Offer {
   const [title, description, createdDate, city, previewImage, images, isPremium, isFavorite, rating, housingType, roomsCount, guestsCount, price, amenities,
-        name, email, avatarPath, userType, location] = offerData.replace('\n', '').split('\t');
+    name, email, avatarPath, userType, location] = offerData.replace('\n', '').split('\t');
 
   const parseBoolean = (value: string): boolean => value === 'true';
   const parseInt = (value: string): number => Number.parseInt(value, 10);
