@@ -24,7 +24,7 @@ export const configRestSchema = convict<RestSchema>({
   },
   DB_HOST: {
     doc: 'IP address of the database server (MongoDB)',
-    format: 'ipaddress',
+    format: 'ipaddress', // TODO сделать доступным localhost??
     env: 'DB_HOST',
     default: '127.0.0.1'
   },
