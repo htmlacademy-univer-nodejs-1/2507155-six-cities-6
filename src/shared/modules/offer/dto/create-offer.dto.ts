@@ -1,12 +1,20 @@
-import { OfferType } from '../../../types/index.js';
+import { AmenityType, HousingType, Location } from '../../../types/index.js';
 
 export class CreateOfferDto {
   public title: string;
   public description: string;
-  public postDate: Date;
-  public image: string;
-  public type: OfferType;
+  public publishDate: Date;
+  public city: string;
+  public previewImage: string;
+  public housingImages: string[];
+  public isPremium: boolean;
+  public isFavorite: boolean;
+  public rating: number;
+  public housingType: HousingType;
+  public roomsCount: number;
+  public guestsCount: number;
   public price: number;
-  public categories: string[];
-  public userId: string;
+  public amenities: AmenityType[];
+  public authorId: string;
+  public location: Location;
 }

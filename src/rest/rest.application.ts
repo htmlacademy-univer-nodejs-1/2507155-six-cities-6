@@ -13,7 +13,7 @@ export class RestApplication {
     @inject(Component.DatabaseClient) private readonly databaseClient: DatabaseClient,
   ) {}
 
-  private async _initDb() {
+  private async initDb() {
     const mongoUri = getMongoURI(
       this.config.get('DB_USER'),
       this.config.get('DB_PASSWORD'),
@@ -31,8 +31,8 @@ export class RestApplication {
     this.logger.info(`Get value from env $SALT: ${this.config.get('SALT')}`);
     this.logger.info(`Get value from env $DB_HOST: ${this.config.get('DB_HOST')}`);
 
-    this.logger.info('Init database…');
-    await this._initDb();
+    this.logger.info('Init database...');
+    await this.initDb();
     this.logger.info('Init database completed');
   }
 }

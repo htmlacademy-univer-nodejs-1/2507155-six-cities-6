@@ -1,8 +1,7 @@
 import { Command } from './command.interface.js';
 import { TSVFileReader } from '../../shared/libs/file-reader/index.js';
-import { createOffer, getErrorMessage, getMongoURI } from '../../shared/helpers/index.js';
+import { createOffer, getMongoURI } from '../../shared/helpers/index.js';
 import { UserService } from '../../shared/modules/user/user-service.interface.js';
-import { CategoryModel, CategoryService, DefaultCategoryService } from '../../shared/modules/category/index.js';
 import { DefaultOfferService, OfferModel, OfferService } from '../../shared/modules/offer/index.js';
 import { DatabaseClient, MongoDatabaseClient } from '../../shared/libs/database-client/index.js';
 import { Logger } from '../../shared/libs/logger/index.js';
@@ -10,11 +9,9 @@ import { ConsoleLogger } from '../../shared/libs/logger/console.logger.js';
 import { DefaultUserService, UserModel } from '../../shared/modules/user/index.js';
 import { DEFAULT_DB_PORT, DEFAULT_USER_PASSWORD } from './command.constant.js';
 import { Offer } from '../../shared/types/index.js';
-import chalk from 'chalk';
 
 export class ImportCommand implements Command {
   private userService: UserService;
-  private categoryService: CategoryService;
   private offerService: OfferService;
   private databaseClient: DatabaseClient;
   private logger: Logger;
@@ -24,9 +21,8 @@ export class ImportCommand implements Command {
     this.onImportedLine = this.onImportedLine.bind(this);
     this.onCompleteImport = this.onCompleteImport.bind(this);
 
-    this.logger = new ConsoleLogger();
+    this.logger = new ConsoleLogger(); // TODO DI?
     this.offerService = new DefaultOfferService(this.logger, OfferModel);
-    this.categoryService = new DefaultCategoryService(this.logger, CategoryModel);
     this.userService = new DefaultUserService(this.logger, UserModel);
     this.databaseClient = new MongoDatabaseClient(this.logger);
   }
@@ -38,33 +34,34 @@ export class ImportCommand implements Command {
   }
 
   private onCompleteImport(count: number) {
-    console.info(`${count} rows imported.`);
+    this.logger.info(`${count} rows imported`);
     this.databaseClient.disconnect();
   }
 
   private async saveOffer(offer: Offer) {
-    const categories: string[] = [];
     const user = await this.userService.findOrCreate({
-      ...offer.user,
+      ...offer.author,
       password: DEFAULT_USER_PASSWORD
     }, this.salt);
 
-    for (const { name } of offer.categories) {
-      const existCategory = await this.categoryService.findByCategoryNameOrCreate(name, { name });
-      categories.push(existCategory.id);
-    }
-
     await this.offerService.create({
-      categories,
-      userId: user.id,
       title: offer.title,
       description: offer.description,
-      image: offer.image,
-      postDate: offer.postDate,
+      publishDate: offer.publishDate,
+      city: offer.city,
+      previewImage: offer.previewImage,
+      housingImages: offer.housingImages,
+      isPremium: offer.isPremium,
+      isFavorite: offer.isFavorite,
+      rating: offer.rating,
+      housingType: offer.housingType,
+      roomsCount: offer.roomsCount,
+      guestsCount: offer.guestsCount,
       price: offer.price,
-      type: offer.type,
+      amenities: offer.amenities,
+      authorId: user.id,
+      location: offer.location
     });
-
   }
 
   public getName(): string {
@@ -85,8 +82,7 @@ export class ImportCommand implements Command {
     try {
       await fileReader.read();
     } catch (error) {
-      console.error(`${chalk.red('Can\'t import data from file')}: ${filename}`);
-      console.error(chalk.red(getErrorMessage(error)));
+      this.logger.error(`Can't import data from file: ${filename}`, error as Error);
     }
   }
 }
