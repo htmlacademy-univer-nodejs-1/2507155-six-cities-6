@@ -549,11 +549,7 @@ components:
         avatar:
           type: string
         type:
-          type: string
-          enum:
-            - default
-            - pro
-          example: default
+          $ref: "#/components/schemas/userType"
         password:
           type: string
           minLength: 6
@@ -576,11 +572,7 @@ components:
         avatar:
           type: string
         type:
-          type: string
-          enum:
-            - default
-            - pro
-          example: default
+          $ref: "#/components/schemas/userType"
 
     loginUser:
       type: object
@@ -685,6 +677,13 @@ components:
           minimum: -180
           maximum: 180
           example: 2.351499
+
+    userType:
+      type: string
+      enum:
+        - default
+        - pro
+      example: default
 
     authToken:
       type: object
