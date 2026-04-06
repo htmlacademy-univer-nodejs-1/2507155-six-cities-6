@@ -1,11 +1,18 @@
-import { OfferType } from '../../../types/index.js';
+import { AmenityType, HousingType, Location } from '../../../types/index.js';
 
-export class UpdateOfferDto { // TODO
+export class UpdateOfferDto {
   public title?: string;
   public description?: string;
-  public postDate?: Date;
-  public image?: string;
-  public type?: OfferType;
+  public city?: string;
+  public previewImage?: string;
+  public housingImages?: string[];
+  public isPremium?: boolean;
+  public isFavorite?: boolean;    // TODO а должен ли этот параметр на самом деле передаваться при обновлении предложения??
+  public housingType?: HousingType;
+  public roomsCount?: number;
+  public guestsCount?: number;
   public price?: number;
-  public categories?: string[];
+  public amenities?: AmenityType[];
+  public authorId?: string;
+  public location?: Location;
 }

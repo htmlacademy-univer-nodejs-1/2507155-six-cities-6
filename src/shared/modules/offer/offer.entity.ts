@@ -18,9 +18,6 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({ required: true, trim: true, minlength: 20, maxlength: 1024 })
   public description: string;
 
-  @prop({ required: true, default: () => new Date() })
-  public publishDate: Date;
-
   @prop({ required: true, trim: true, enum: [ 'Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf' ], type: () => String }) // TODO хардкод энумы?
   public city: string;
 
@@ -34,10 +31,10 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   public isPremium: boolean;
 
   @prop({ required: true, default: false })
-  public isFavorite: boolean;
+  public isFavorite: boolean;   // TODO флаг Избранное должен хранится для каждого пользователя
 
   @prop({ required: true, min: 1, max: 5 })
-  public rating: number;
+  public rating: number;    // TODO при создании предложения рейтинг отсутствует
 
   @prop({ required: true, type: () => String, enum: HousingType })
   public housingType: HousingType;

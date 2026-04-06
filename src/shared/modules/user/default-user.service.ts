@@ -21,11 +21,11 @@ export class DefaultUserService implements UserService {
     const result = await this.userModel.create(user);
     this.logger.info(`New user created: ${user.email}`);
 
-    return result;
+    return result; // TODO toDto
   }
 
   public async findByEmail(email: string): Promise<DocumentType<UserEntity> | null> {
-    return this.userModel.findOne({email});
+    return this.userModel.findOne({email}); // TODO toDto
   }
 
   public async findOrCreate(dto: CreateUserDto, salt: string): Promise<DocumentType<UserEntity>> {
@@ -38,9 +38,13 @@ export class DefaultUserService implements UserService {
     return this.create(dto, salt);
   }
 
-    public async updateById(userId: string, dto: UpdateUserDto): Promise<DocumentType<UserEntity> | null> {
+  // TODO findById?
+
+  // TODO хоть в тз отдельно не сказано про обновление пользователя, я уверен, что такой функционал пригодится
+  // добавить в спеку
+  public async updateById(userId: string, dto: UpdateUserDto): Promise<DocumentType<UserEntity> | null> {
     return this.userModel
       .findByIdAndUpdate(userId, dto, { new: true })
-      .exec();
+      .exec(); // TODO toDto
   }
 }
