@@ -7,7 +7,7 @@ export class UpdateOfferDto {
   public previewImage?: string;
   public housingImages?: string[];
   public isPremium?: boolean;
-  public isFavorite?: boolean;  // TODO должен ли этот параметр передаваться при создании предложения?? есть же отдельные ручки для управления избранными
+  public isFavorite?: boolean; // TODO должен ли этот параметр передаваться при создании предложения?? есть же отдельные ручки для управления избранными
   public housingType?: HousingType;
   public roomsCount?: number;
   public guestsCount?: number;

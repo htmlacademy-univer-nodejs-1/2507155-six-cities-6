@@ -34,7 +34,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   public isFavorite: boolean; // TODO флаг Избранное должен хранится для каждого пользователя
 
   @prop({ required: true, min: 1, max: 5 })
-  public rating: number;  // TODO при создании предложения рейтинг отсутствует
+  public rating: number; // TODO при создании предложения рейтинг отсутствует
 
   @prop({ required: true, type: () => String, enum: HousingType })
   public housingType: HousingType;
