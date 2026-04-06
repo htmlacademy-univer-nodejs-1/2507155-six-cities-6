@@ -19,10 +19,10 @@ export class ImportCommand implements Command {
   private salt: string;
 
   constructor() {
-    this.onImportedLine = this.onImportedLine.bind(this); // TODO адаптировать под изменения бд
+    this.onImportedLine = this.onImportedLine.bind(this); // TODO адаптировать импорт под изменения бд
     this.onCompleteImport = this.onCompleteImport.bind(this);
 
-    this.logger = new ConsoleLogger(); // TODO DI?
+    this.logger = new ConsoleLogger(); // TODO DI? (т.к. это cli, то скорее нет)
     this.offerService = new DefaultOfferService(this.logger, OfferModel, CommentModel);
     this.userService = new DefaultUserService(this.logger, UserModel);
     this.databaseClient = new MongoDatabaseClient(this.logger);

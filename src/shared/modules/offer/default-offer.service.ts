@@ -10,7 +10,7 @@ import { DEFAULT_OFFER_COUNT, PREMIUM_OFFER_COUNT } from './offer.constant.js';
 import { CommentEntity } from '../comment/comment.entity.js';
 
 @injectable()
-export class DefaultOfferService implements OfferService { // TODO не забыть про валидацию данных
+export class DefaultOfferService implements OfferService { // TODO не забыть потом про валидацию данных
   constructor(
     @inject(Component.Logger) private readonly logger: Logger,
     @inject(Component.OfferModel) private readonly offerModel: types.ModelType<OfferEntity>,
@@ -44,7 +44,7 @@ export class DefaultOfferService implements OfferService { // TODO не забы
   public async deleteById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
       .findByIdAndDelete(offerId)
-      .exec();
+      .exec(); // TODO toDto
   }
 
   public async updateById(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | null> {
@@ -59,19 +59,19 @@ export class DefaultOfferService implements OfferService { // TODO не забы
       .find({ city: city, isPremium: true })
       .sort({ createdAt: SortType.Down })
       .limit(PREMIUM_OFFER_COUNT)
-      .exec();
+      .exec(); // TODO toDto
   }
 
   public async findFavorite(): Promise<DocumentType<OfferEntity>[]> {
-    throw new Error("TODO реализовать"); // TODO пока не понятно, как функциональность должна работать, поэтому не трогаю
+    throw new Error('TODO реализовать'); // TODO пока не понятно, как функциональность должна работать, поэтому не трогаю
   }
 
   public async addToFavorite(offerId: string): Promise<void> {
-    throw new Error("TODO реализовать");
+    throw new Error('TODO реализовать');
   }
 
   public async removeFromFavorite(offerId: string): Promise<void> {
-    throw new Error("TODO реализовать");
+    throw new Error('TODO реализовать');
   }
 
   public async incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null> {
@@ -98,7 +98,7 @@ export class DefaultOfferService implements OfferService { // TODO не забы
     const rating = avgRating.length > 0 ? avgRating[0].avgRating : 0;
     return this.offerModel
       .findByIdAndUpdate(offerId, { rating: rating })
-      .exec();
+      .exec(); // TODO toDto
   }
 
   public async exists(documentId: string): Promise<boolean> {

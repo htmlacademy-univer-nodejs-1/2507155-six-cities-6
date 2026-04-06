@@ -1,9 +1,9 @@
-import { UserDto } from "../../user/dto/user.dto.js";
+import { UserDto } from '../../user/dto/user.dto.js';
 
 export type CommentDto = {
   id: string;
   text: string;
-  publishDate: string; // TODO дату редактирования? (эта дтошка идет в ответ пользователю)
+  publishDate: string;
   rating: number;
   author: UserDto;
 };

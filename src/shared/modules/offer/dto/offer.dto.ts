@@ -1,5 +1,5 @@
-import { UserDto } from "../../user/dto/user.dto.js";
-import { PreviewOfferDto } from "./preview-offer.dto.js";
+import { UserDto } from '../../user/dto/user.dto.js';
+import { PreviewOfferDto } from './preview-offer.dto.js';
 
 export type OfferFullDto = PreviewOfferDto & {
   description: string;
