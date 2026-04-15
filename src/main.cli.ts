@@ -5,7 +5,7 @@ import { CLIApplication, GenerateCommand, HelpCommand, ImportCommand, VersionCom
 function bootstrap() {
   const cliApplication = new CLIApplication();
   cliApplication.registerCommands([
-    new HelpCommand(),
+    new HelpCommand(), // TODO DI? (т.к. это cli, то скорее нет)
     new VersionCommand(),
     new ImportCommand(),
     new GenerateCommand(),

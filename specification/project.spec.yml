@@ -95,7 +95,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/createOffer"    # TODO отдельная схема для патча?
+              $ref: "#/components/schemas/updateOffer"
       responses:
         "200":
           description: Предложение обновлено.
@@ -260,6 +260,9 @@ paths:
         "404":
           $ref: "#/components/responses/notFoundError"
 
+    # TODO patch для коммента?
+    # TODO delete для коммента?
+
   /users/register:
     post:
       tags:
@@ -340,6 +343,9 @@ paths:
           description: Выход успешно выполнен.
         "401":
           $ref: "#/components/responses/unauthorizedError"
+
+  # TODO patch для юзера?
+  # TODO delete для юзера??
 
 
 components:
@@ -475,12 +481,59 @@ components:
           example: 69420
         amenities:
           type: array
+          minItems: 1   # TODO точно минимум 1? из тз не понятно
           items:
             $ref: "#/components/schemas/amenity"
           example:
             - Breakfast
             - Air conditioning
             - Laptop friendly workspace
+        location:
+          $ref: "#/components/schemas/location"
+
+    updateOffer:
+      type: object
+      description: Частичное обновление предложения.
+      properties:
+        title:
+          type: string
+          minLength: 10
+          maxLength: 100
+        description:
+          type: string
+          minLength: 20
+          maxLength: 1024
+        city:
+          $ref: "#/components/schemas/city"
+        previewImage:
+          type: string
+        housingImages:
+          type: array
+          minItems: 6
+          maxItems: 6
+          items:
+            type: string
+        isPremium:
+          type: boolean
+        housingType:
+          $ref: "#/components/schemas/housingType"
+        roomsCount:
+          type: integer
+          minimum: 1
+          maximum: 8
+        guestsCount:
+          type: integer
+          minimum: 1
+          maximum: 10
+        price:
+          type: number
+          minimum: 100
+          maximum: 100000
+        amenities:
+          type: array
+          minItems: 1
+          items:
+            $ref: "#/components/schemas/amenity"
         location:
           $ref: "#/components/schemas/location"
 
@@ -520,6 +573,7 @@ components:
               example: 8
             amenities:
               type: array
+              minItems: 1
               items:
                 $ref: "#/components/schemas/amenity"
               example:
@@ -609,7 +663,7 @@ components:
 
     createComment:
       type: object
-      description: Создания комментария
+      description: Создание комментария
       required:
         - text
         - rating
@@ -619,7 +673,7 @@ components:
           minLength: 5
           maxLength: 1024
           example: Some text for this comment.
-        rating:   # TODO в тз отдельно указано, что Дата публикации не исп. при создании комментария. Но для рейтинга такой пометки не было. И в целом пока не понятно как работать с рейтингом
+        rating:   # TODO как понял, это рейтинг для оффера. надо уточнить
           type: number
           minimum: 1
           maximum: 5

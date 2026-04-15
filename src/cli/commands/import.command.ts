@@ -9,6 +9,7 @@ import { ConsoleLogger } from '../../shared/libs/logger/console.logger.js';
 import { DefaultUserService, UserModel } from '../../shared/modules/user/index.js';
 import { DEFAULT_DB_PORT, DEFAULT_USER_PASSWORD } from './command.constant.js';
 import { Offer } from '../../shared/types/index.js';
+import { CommentModel } from '../../shared/modules/comment/comment.entity.js';
 
 export class ImportCommand implements Command {
   private userService: UserService;
@@ -18,11 +19,11 @@ export class ImportCommand implements Command {
   private salt: string;
 
   constructor() {
-    this.onImportedLine = this.onImportedLine.bind(this);
+    this.onImportedLine = this.onImportedLine.bind(this); // TODO адаптировать импорт под изменения бд
     this.onCompleteImport = this.onCompleteImport.bind(this);
 
-    this.logger = new ConsoleLogger(); // TODO DI?
-    this.offerService = new DefaultOfferService(this.logger, OfferModel);
+    this.logger = new ConsoleLogger(); // TODO DI? (т.к. это cli, то скорее нет)
+    this.offerService = new DefaultOfferService(this.logger, OfferModel, CommentModel);
     this.userService = new DefaultUserService(this.logger, UserModel);
     this.databaseClient = new MongoDatabaseClient(this.logger);
   }
@@ -47,13 +48,13 @@ export class ImportCommand implements Command {
     await this.offerService.create({
       title: offer.title,
       description: offer.description,
-      publishDate: offer.publishDate,
+      //publishDate: offer.publishDate, // TODO вернуть?
       city: offer.city,
       previewImage: offer.previewImage,
       housingImages: offer.housingImages,
       isPremium: offer.isPremium,
       isFavorite: offer.isFavorite,
-      rating: offer.rating,
+      //rating: offer.rating, // TODO как быть с рейтингом?
       housingType: offer.housingType,
       roomsCount: offer.roomsCount,
       guestsCount: offer.guestsCount,
@@ -74,7 +75,7 @@ export class ImportCommand implements Command {
 
     await this.databaseClient.connect(uri);
 
-    const fileReader = new TSVFileReader(filename.trim());
+    const fileReader = new TSVFileReader(filename.trim()); // TODO DI? (т.к. это cli, то скорее нет)
 
     fileReader.on('line', this.onImportedLine);
     fileReader.on('end', this.onCompleteImport);

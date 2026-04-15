@@ -12,7 +12,7 @@ export function createOffer(offerData: string): Offer {
     return { latitude, longitude };
   };
 
-  return {
+  return { // TODO адаптировать под изменения бд
     title,
     description,
     publishDate: new Date(createdDate),
