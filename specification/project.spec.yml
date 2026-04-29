@@ -111,7 +111,6 @@ paths:
           description: Нельзя редактировать чужое предложение.
         "404":
           $ref: "#/components/responses/notFoundError"
-
     delete:
       tags:
         - offers
