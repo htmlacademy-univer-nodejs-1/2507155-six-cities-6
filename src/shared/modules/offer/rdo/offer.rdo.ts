@@ -1,29 +1,27 @@
 import { Expose } from 'class-transformer';
 import { UserRdo } from '../../user/rdo/user.rdo.js';
 import { PreviewOfferRdo } from './preview-offer.rdo.js';
+import { Location } from '../../../types/index.js';
 
 export class OfferRdo extends PreviewOfferRdo {
   @Expose()
-  description: string;
+  public description: string;
 
   @Expose()
-  housingImages: string[];
+  public housingImages: string[];
 
   @Expose()
-  roomsCount: number;
+  public roomsCount: number;
 
   @Expose()
-  guestsCount: number;
+  public guestsCount: number;
 
   @Expose()
-  amenities: string[];
+  public amenities: string[];
 
   @Expose()
-  author: UserRdo;
+  public author: UserRdo;
 
   @Expose()
-  location: {
-    latitude: number;
-    longitude: number;
-  };
-};
+  public location: Location;
+}
