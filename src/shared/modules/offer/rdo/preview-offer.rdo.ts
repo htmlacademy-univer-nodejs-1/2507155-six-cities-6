@@ -2,35 +2,35 @@ import { Expose } from 'class-transformer';
 
 export class PreviewOfferRdo {
   @Expose()
-  id: string;
+  public id: string;
 
   @Expose()
-  title: string;
+  public title: string;
 
   @Expose()
-  publishDate: Date;
+  public publishDate: Date;
 
   @Expose()
-  city: string;
+  public city: string;
 
   @Expose()
-  previewImage: string;
+  public previewImage: string;
 
   @Expose()
-  isPremium: boolean;
+  public isPremium: boolean;
 
   @Expose()
-  isFavorite: boolean;
+  public isFavorite: boolean;
 
   @Expose()
-  housingType: string;
+  public housingType: string;
 
   @Expose()
-  price: number;
+  public price: number;
 
   @Expose()
-  rating: number;
+  public rating: number;
 
   @Expose()
-  commentsCount: number;
-};
+  public commentsCount: number;
+}

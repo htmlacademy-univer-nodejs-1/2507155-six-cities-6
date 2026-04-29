@@ -3,17 +3,17 @@ import { UserRdo } from '../../user/rdo/user.rdo.js';
 
 export class CommentRdo {
   @Expose()
-  id: string;
+  public id: string;
 
   @Expose()
-  text: string;
+  public text: string;
 
   @Expose()
-  publishDate: string;
+  public publishDate: string;
 
   @Expose()
-  rating: number;
+  public rating: number;
 
   @Expose()
-  author: UserRdo;
-};
+  public author: UserRdo;
+}
