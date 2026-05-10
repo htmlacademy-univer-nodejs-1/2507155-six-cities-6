@@ -8,6 +8,8 @@ import { CreateOfferDto } from './dto/create-offer.dto.js';
 import { UpdateOfferDto } from './dto/update-offer.dto.js';
 import { DEFAULT_OFFER_COUNT, PREMIUM_OFFER_COUNT } from './offer.constant.js';
 import { CommentEntity } from '../comment/comment.entity.js';
+import { HttpError } from '../../libs/rest/index.js';
+import { StatusCodes } from 'http-status-codes';
 
 @injectable()
 export class DefaultOfferService implements OfferService { // TODO не забыть потом про валидацию данных
@@ -21,14 +23,14 @@ export class DefaultOfferService implements OfferService { // TODO не забы
     const result = await this.offerModel.create(dto);
     this.logger.info(`New offer created: ${dto.title}`);
 
-    return result; // TODO toDto
+    return result.populate(['userId']);
   }
 
   public async findById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
       .findById(offerId)
       .populate(['userId'])
-      .exec(); // TODO toDto
+      .exec();
   }
 
   public async find(count?: number): Promise<DocumentType<OfferEntity>[]> {
@@ -37,21 +39,21 @@ export class DefaultOfferService implements OfferService { // TODO не забы
       .find()
       .sort({ createdAt: SortType.Down })
       .limit(limit)
-      .populate(['userId'])
-      .exec(); // TODO toDto
+      .populate(['userId']) // TODO а нужен ли тут populate для userId?
+      .exec();
   }
 
   public async deleteById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
       .findByIdAndDelete(offerId)
-      .exec(); // TODO toDto
+      .exec();
   }
 
   public async updateById(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
       .findByIdAndUpdate(offerId, dto, {new: true})
       .populate(['userId'])
-      .exec(); // TODO toDto
+      .exec();
   }
 
   public async findPremiumByCity(city: string): Promise<DocumentType<OfferEntity>[]> {
@@ -59,19 +61,19 @@ export class DefaultOfferService implements OfferService { // TODO не забы
       .find({ city: city, isPremium: true })
       .sort({ createdAt: SortType.Down })
       .limit(PREMIUM_OFFER_COUNT)
-      .exec(); // TODO toDto
+      .exec();
   }
 
   public async findFavorite(): Promise<DocumentType<OfferEntity>[]> {
-    throw new Error('TODO реализовать'); // TODO пока не понятно, как функциональность должна работать, поэтому не трогаю
+    throw new HttpError(StatusCodes.NOT_IMPLEMENTED, 'TODO реализовать'); // TODO пока не понятно, как функциональность должна работать, поэтому не трогаю
   }
 
   public async addToFavorite(offerId: string): Promise<void> {
-    throw new Error('TODO реализовать');
+    throw new HttpError(StatusCodes.NOT_IMPLEMENTED, 'TODO реализовать', offerId);
   }
 
   public async removeFromFavorite(offerId: string): Promise<void> {
-    throw new Error('TODO реализовать');
+    throw new HttpError(StatusCodes.NOT_IMPLEMENTED, 'TODO реализовать', offerId);
   }
 
   public async incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null> {
@@ -98,7 +100,7 @@ export class DefaultOfferService implements OfferService { // TODO не забы
     const rating = avgRating.length > 0 ? avgRating[0].avgRating : 0;
     return this.offerModel
       .findByIdAndUpdate(offerId, { rating: rating })
-      .exec(); // TODO toDto
+      .exec();
   }
 
   public async exists(documentId: string): Promise<boolean> {

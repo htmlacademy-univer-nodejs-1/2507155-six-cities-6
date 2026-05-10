@@ -5,7 +5,7 @@ export class CreateOfferDto {
   public description: string;
   public city: string;
   public previewImage: string;
-  public housingImages: string[];
+  public housingImages: string[]; // TODO строго 6
   public isPremium: boolean;
   public isFavorite?: boolean; // TODO должен ли этот параметр передаваться при создании предложения?? есть же отдельные ручки для управления избранными
   public housingType: HousingType;
@@ -13,6 +13,6 @@ export class CreateOfferDto {
   public guestsCount: number;
   public price: number;
   public amenities: AmenityType[];
-  public authorId: string;
+  public userId: string;
   public location: Location;
 }

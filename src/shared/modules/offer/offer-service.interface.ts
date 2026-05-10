@@ -13,7 +13,7 @@ export interface OfferService {
   findFavorite(): Promise<DocumentType<OfferEntity>[]>;
   addToFavorite(offerId: string): Promise<void>;
   removeFromFavorite(offerId: string): Promise<void>;
-  incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null>;
+  incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null>; // TODO а нужен ли? Может пригодиться, но пока непонятно
   calculateRating(offerId: string): Promise<DocumentType<OfferEntity> | null>;
   exists(documentId: string): Promise<boolean>;
 }
