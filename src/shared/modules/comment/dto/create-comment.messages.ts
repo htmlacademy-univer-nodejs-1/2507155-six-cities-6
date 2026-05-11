@@ -4,7 +4,7 @@ export const CreateCommentMessages = {
     lengthField: 'min length is 5, max is 2024'
   },
   rating: {
-    invalid: 'rating must be a integer',
+    invalidFormat: 'rating must be a number',
     min: 'minimum rating value must be 1',
     max: 'maximum rating value must be 5'
   },

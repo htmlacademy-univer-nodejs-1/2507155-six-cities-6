@@ -1,5 +1,5 @@
-import { AmenityType, HousingType, Location } from '../../../types/index.js';
-import { ArrayMaxSize, ArrayMinSize, IsArray, IsBoolean, IsEnum, IsIn, IsInt, IsOptional, IsString, Max, MaxLength, Min, MinLength, } from 'class-validator';
+import { AmenityType, City, HousingType, Location } from '../../../types/index.js';
+import { ArrayMaxSize, ArrayMinSize, IsArray, IsBoolean, IsEnum, IsInt, IsOptional, IsString, Max, MaxLength, Min, MinLength, } from 'class-validator';
 import { CreateUpdateOfferMessage } from './update-offer.messages.js';
 
 export class UpdateOfferDto {
@@ -14,8 +14,8 @@ export class UpdateOfferDto {
   public description?: string;
 
   @IsOptional()
-  @IsIn(['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'], { message: CreateUpdateOfferMessage.city.invalidFormat }) // TODO enum?
-  public city?: string;
+  @IsEnum(City, { message: CreateUpdateOfferMessage.city.invalidFormat })
+  public city?: City;
 
   @IsOptional()
   @IsString({ message: CreateUpdateOfferMessage.previewImage.invalidFormat })

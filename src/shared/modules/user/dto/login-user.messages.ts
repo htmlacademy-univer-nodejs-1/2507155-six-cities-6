@@ -1,4 +1,4 @@
-export const CreateLoginUserMessage = {
+export const CreateLoginUserMessage = { // TODO объединить с CreateUserMessages?
   email: {
     invalidFormat: 'email must be a valid address',
   },

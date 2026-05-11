@@ -11,9 +11,8 @@ import { OfferRdo } from './rdo/offer.rdo.js';
 import { StatusCodes } from 'http-status-codes';
 import { OfferIdRequestParam } from './types/offerId-request-param.type.js';
 import { UpdateOfferDto } from './dto/update-offer.dto.js';
-import { CommentRdo, CommentService, CreateCommentDto } from '../comment/index.js';
+import { CommentRdo, CommentService, CreateCommentDto, CreateCommentRequest } from '../comment/index.js';
 import { CityRequestParam } from './types/city-request-param.type.js';
-import { CreateCommentRequest } from '../comment/types/create-comment-request.type.js';
 
 @injectable()
 export class OfferController extends BaseController {
@@ -99,6 +98,7 @@ export class OfferController extends BaseController {
     { params }: Request<CityRequestParam>,
     res: Response
   ): Promise<void> {
+    // TODO проверку на города
     const premiumOffers = await this.offerService.findPremiumByCity(params.city);
     this.ok(res, fillDTO(PreviewOfferRdo, premiumOffers));
   }

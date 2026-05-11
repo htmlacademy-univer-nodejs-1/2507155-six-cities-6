@@ -1,5 +1,5 @@
 import { defaultClasses, getModelForClass, modelOptions, prop, Ref } from '@typegoose/typegoose';
-import { AmenityType, HousingType } from '../../types/index.js';
+import { AmenityType, City, HousingType } from '../../types/index.js';
 import { UserEntity } from '../user/user.entity.js';
 import { LocationSchema } from './location.schema.js';
 
@@ -18,8 +18,8 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({ required: true, trim: true, minlength: 20, maxlength: 1024 })
   public description: string;
 
-  @prop({ required: true, trim: true, enum: [ 'Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf' ], type: () => String }) // TODO хардкод энумы?
-  public city: string;
+  @prop({ required: true, trim: true, type: () => String, enum: City })
+  public city: City;
 
   @prop({ required: true, trim: true })
   public previewImage: string;

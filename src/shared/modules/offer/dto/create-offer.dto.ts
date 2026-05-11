@@ -1,5 +1,5 @@
-import { ArrayMaxSize, ArrayMinSize, IsArray, IsBoolean, IsEnum, IsIn, IsInt, IsMongoId, Max, MaxLength, Min, MinLength } from 'class-validator';
-import { AmenityType, HousingType, Location } from '../../../types/index.js';
+import { ArrayMaxSize, ArrayMinSize, IsArray, IsBoolean, IsEnum, IsInt, IsMongoId, Max, MaxLength, Min, MinLength } from 'class-validator';
+import { AmenityType, City, HousingType, Location } from '../../../types/index.js';
 import { CreateOfferValidationMessage } from './create-offer.messages.js';
 
 export class CreateOfferDto {
@@ -11,8 +11,8 @@ export class CreateOfferDto {
   @MaxLength(1024, { message: CreateOfferValidationMessage.description.maxLength })
   public description: string;
 
-  @IsIn(['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'], { message: CreateOfferValidationMessage.city.invalidFormat }) // TODO enum?
-  public city: string;
+  @IsEnum(City, { message: CreateOfferValidationMessage.city.invalidFormat })
+  public city: City;
 
   @MaxLength(256, { message: CreateOfferValidationMessage.previewImage.maxLength })
   public previewImage: string;
