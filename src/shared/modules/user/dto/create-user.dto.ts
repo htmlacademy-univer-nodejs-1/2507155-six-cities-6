@@ -3,8 +3,8 @@ import { CreateUserMessages } from './create-user.messages.js';
 import { UserType } from '../../../types/user-type.enum.js';
 
 export class CreateUserDto {
-  @IsString({ message: CreateUserMessages.firstname.invalidFormat })
-  @Length(1, 15, { message: CreateUserMessages.firstname.lengthField })
+  @IsString({ message: CreateUserMessages.name.invalidFormat })
+  @Length(1, 15, { message: CreateUserMessages.name.lengthField })
   public name: string;
 
   @IsEmail({}, { message: CreateUserMessages.email.invalidFormat })
@@ -14,7 +14,7 @@ export class CreateUserDto {
   @IsString({ message: CreateUserMessages.avatarPath.invalidFormat })
   public avatar?: string;
 
-  @IsEnum(UserType, { message: CreateUserMessages.avatarPath.invalidFormat })
+  @IsEnum(UserType, { message: CreateUserMessages.userType.invalidFormat })
   public type: UserType;
 
   @IsString({ message: CreateUserMessages.password.invalidFormat })
