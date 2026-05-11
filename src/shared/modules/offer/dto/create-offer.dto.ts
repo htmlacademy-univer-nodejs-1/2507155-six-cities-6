@@ -1,4 +1,4 @@
-import { IsArray, IsDateString, IsEnum, IsInt, IsMongoId, Max, MaxLength, Min, MinLength } from 'class-validator';
+import { ArrayMaxSize, ArrayMinSize, IsArray, IsBoolean, IsEnum, IsIn, IsInt, IsMongoId, Max, MaxLength, Min, MinLength } from 'class-validator';
 import { AmenityType, HousingType, Location } from '../../../types/index.js';
 import { CreateOfferValidationMessage } from './create-offer.messages.js';
 
@@ -11,35 +11,47 @@ export class CreateOfferDto {
   @MaxLength(1024, { message: CreateOfferValidationMessage.description.maxLength })
   public description: string;
 
-  public city: string; // TODO enum?
+  @IsIn(['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'], { message: CreateOfferValidationMessage.city.invalidFormat }) // TODO enum?
+  public city: string;
 
-  @MaxLength(256, { message: CreateOfferValidationMessage.image.maxLength })
+  @MaxLength(256, { message: CreateOfferValidationMessage.previewImage.maxLength })
   public previewImage: string;
 
-  @IsArray({ message: CreateOfferValidationMessage.categories.invalidFormat })
-  public housingImages: string[]; // TODO строго 6
+  @IsArray({ message: CreateOfferValidationMessage.housingImages.invalidFormat })
+  @ArrayMinSize(6, { message: CreateOfferValidationMessage.housingImages.size })
+  @ArrayMaxSize(6, { message: CreateOfferValidationMessage.housingImages.size })
+  public housingImages: string[];
 
+  @IsBoolean({ message: CreateOfferValidationMessage.isPremium.invalidFormat })
   public isPremium: boolean;
 
   public isFavorite?: boolean; // TODO должен ли этот параметр передаваться при создании предложения?? есть же отдельные ручки для управления избранными
 
-  @IsEnum(HousingType, { message: CreateOfferValidationMessage.type.invalid })
+  @IsEnum(HousingType, { message: CreateOfferValidationMessage.housingType.invalidFormat })
   public housingType: HousingType;
 
+  @IsInt({ message: CreateOfferValidationMessage.roomsCount.invalidFormat })
+  @Min(1, { message: CreateOfferValidationMessage.roomsCount.minValue })
+  @Max(8, { message: CreateOfferValidationMessage.roomsCount.maxValue })
   public roomsCount: number;
 
+  @IsInt({ message: CreateOfferValidationMessage.guestsCount.invalidFormat })
+  @Min(1, { message: CreateOfferValidationMessage.guestsCount.minValue })
+  @Max(10, { message: CreateOfferValidationMessage.guestsCount.maxValue })
   public guestsCount: number;
 
   @IsInt({ message: CreateOfferValidationMessage.price.invalidFormat })
   @Min(100, { message: CreateOfferValidationMessage.price.minValue })
-  @Max(200000, { message: CreateOfferValidationMessage.price.maxValue })
+  @Max(100000, { message: CreateOfferValidationMessage.price.maxValue })
   public price: number;
 
-  @IsArray({ message: CreateOfferValidationMessage.categories.invalidFormat })
+  @IsArray({ message: CreateOfferValidationMessage.amenities.isArray })
+  @IsEnum(AmenityType, { each: true, message: CreateOfferValidationMessage.amenities.invalidFormat })
   public amenities: AmenityType[];
 
   @IsMongoId({ message: CreateOfferValidationMessage.userId.invalidId })
   public userId: string;
 
+  // TODO валидатор для координат?
   public location: Location;
 }

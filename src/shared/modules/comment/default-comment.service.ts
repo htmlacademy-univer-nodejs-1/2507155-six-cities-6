@@ -14,8 +14,8 @@ export class DefaultCommentService implements CommentService {
     @inject(Component.CommentModel) private readonly commentModel: types.ModelType<CommentEntity>
   ) {}
 
-  public async create(dto: CreateCommentDto): Promise<DocumentType<CommentEntity>> {
-    const comment = await this.commentModel.create(dto);
+  public async create(offerId: string, dto: CreateCommentDto): Promise<DocumentType<CommentEntity>> {
+    const comment = await this.commentModel.create({ offerId, ...dto });
     this.logger.info(`New comment created: ${dto.text}`);
 
     return comment.populate(['offerId', 'userId']); // TODO а нужен ли populate для offerId?

@@ -7,23 +7,40 @@ export const CreateOfferValidationMessage = {
     minLength: 'Minimum description length must be 20',
     maxLength: 'Maximum description length must be 1024',
   },
-  postDate: {
-    invalidFormat: 'postDate must be a valid ISO date',
+  city: {
+    invalidFormat: 'city must be Paris, Cologne, Brussels, Amsterdam, Hamburg or Dusseldorf'
   },
-  image: {
+  previewImage: {
     maxLength: 'Too short for field «image»',
   },
-  type: {
-    invalid: 'type must be Buy and Sell',
+  housingImages: {
+    invalidFormat: 'housingImages must be an array',
+    size: 'housingImages length must be 6'
+  },
+  isPremium: {
+    invalidFormat: 'isPremium must be a boolean type'
+  },
+  housingType: {
+    invalidFormat: 'housingType must be apartment, house, room or hotel'
+  },
+  roomsCount: {
+    invalidFormat: 'roomsCount must be an integer',
+    minValue: 'Minimum roomsCount value must be 1',
+    maxValue: 'Maximum roomsCount value must be 8'
+  },
+  guestsCount: {
+    invalidFormat: 'guestsCount must be an integer',
+    minValue: 'Minimum guestsCount value must be 1',
+    maxValue: 'Maximum guestsCount value must be 10'
   },
   price: {
-    invalidFormat: 'Price must be an integer',
-    minValue: 'Minimum price is 100',
-    maxValue: 'Maximum price is 200000',
+    invalidFormat: 'price must be an integer',
+    minValue: 'Minimum price value must be 100',
+    maxValue: 'Maximum price value must be 100000'
   },
-  categories: {
-    invalidFormat: 'Field categories must be an array',
-    invalidId: 'Categories field must be an array of valid id',
+  amenities: {
+    isArray: 'amenities must be an array',
+    invalidFormat: 'amenities items must be Breakfast, Air conditioning, Laptop friendly workspace, Baby seat, Washer, Towels or Fridge'
   },
   userId: {
     invalidId: 'userId field must be a valid id',
