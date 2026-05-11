@@ -13,6 +13,7 @@ import { OfferIdRequestParam } from './types/offerId-request-param.type.js';
 import { UpdateOfferDto } from './dto/update-offer.dto.js';
 import { CommentRdo, CommentService, CreateCommentDto, CreateCommentRequest } from '../comment/index.js';
 import { CityRequestParam } from './types/city-request-param.type.js';
+import { DocumentExistsMiddleware } from '../../libs/rest/middleware/document-exists.middleware.js';
 
 @injectable()
 export class OfferController extends BaseController {
@@ -26,14 +27,14 @@ export class OfferController extends BaseController {
     this.logger.info('Registering routes for OfferController...');
     this.addRoute({ path: '/', method: HttpMethod.Get, handler: this.index });
     this.addRoute({ path: '/', method: HttpMethod.Post, handler: this.create, middlewares: [new ValidateDtoMiddleware(CreateOfferDto)] });
-    this.addRoute({ path: '/:offerId', method: HttpMethod.Get, handler: this.find, middlewares: [new ValidateObjectIdMiddleware('offerId')] });
-    this.addRoute({ path: '/:offerId', method: HttpMethod.Patch, handler: this.update, middlewares: [new ValidateObjectIdMiddleware('offerId'), new ValidateDtoMiddleware(UpdateOfferDto)] });
-    this.addRoute({ path: '/:offerId', method: HttpMethod.Delete, handler: this.delete, middlewares: [new ValidateObjectIdMiddleware('offerId')] });
+    this.addRoute({ path: '/:offerId', method: HttpMethod.Get, handler: this.find, middlewares: [new ValidateObjectIdMiddleware('offerId'), new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')] });
+    this.addRoute({ path: '/:offerId', method: HttpMethod.Patch, handler: this.update, middlewares: [new ValidateObjectIdMiddleware('offerId'), new ValidateDtoMiddleware(UpdateOfferDto), new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')] });
+    this.addRoute({ path: '/:offerId', method: HttpMethod.Delete, handler: this.delete, middlewares: [new ValidateObjectIdMiddleware('offerId'), new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')] });
     this.addRoute({ path: '/premium/:city', method: HttpMethod.Get, handler: this.indexPremium });
     this.addRoute({ path: '/favorite', method: HttpMethod.Get, handler: this.indexFavorite });
     this.addRoute({ path: '/:offerId/favorite', method: HttpMethod.Post, handler: this.addToFavorite, middlewares: [new ValidateObjectIdMiddleware('offerId')] });
     this.addRoute({ path: '/:offerId/favorite', method: HttpMethod.Delete, handler: this.removeFromFavorite, middlewares: [new ValidateObjectIdMiddleware('offerId')] });
-    this.addRoute({ path: '/:offerId/comments', method: HttpMethod.Get, handler: this.getComments, middlewares: [ new ValidateObjectIdMiddleware('offerId') ] });
+    this.addRoute({ path: '/:offerId/comments', method: HttpMethod.Get, handler: this.getComments, middlewares: [ new ValidateObjectIdMiddleware('offerId'), new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId') ] });
     this.addRoute({ path: '/:offerId/comments', method: HttpMethod.Post, handler: this.createComment, middlewares: [ new ValidateObjectIdMiddleware('offerId'), new ValidateDtoMiddleware(CreateCommentDto) ] });
   }
 
