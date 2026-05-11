@@ -16,14 +16,14 @@ export class DefaultOfferService implements OfferService { // TODO не забы
   constructor(
     @inject(Component.Logger) private readonly logger: Logger,
     @inject(Component.OfferModel) private readonly offerModel: types.ModelType<OfferEntity>,
-    @inject(Component.OfferModel) private readonly commentModel: types.ModelType<CommentEntity>
+    @inject(Component.CommentModel) private readonly commentModel: types.ModelType<CommentEntity>
   ) {}
 
   public async create(dto: CreateOfferDto): Promise<DocumentType<OfferEntity>> {
     const result = await this.offerModel.create(dto);
     this.logger.info(`New offer created: ${dto.title}`);
 
-    return result.populate(['userId']);
+    return result.populate(['userId']); // TODO убрать populate потому что будем возвращать через findById?
   }
 
   public async findById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
