@@ -22,7 +22,7 @@ export class UserController extends BaseController {
     @inject(Component.Config) private readonly configService: Config<RestSchema>,
   ) {
     super(logger);
-    this.logger.info('Register routes for UserController…');
+    this.logger.info('Register routes for UserController...');
 
     this.addRoute({ path: '/register', method: HttpMethod.Post, handler: this.create, middlewares: [new ValidateDtoMiddleware(CreateUserDto)] });
     this.addRoute({ path: '/login', method: HttpMethod.Post, handler: this.login, middlewares: [new ValidateDtoMiddleware(LoginUserDto)] });
@@ -93,6 +93,7 @@ export class UserController extends BaseController {
     );
   }
 
+  // TODO добавить в спеку
   public async uploadAvatar(req: Request, res: Response) {
     this.created(res, {
       filepath: req.file?.path
