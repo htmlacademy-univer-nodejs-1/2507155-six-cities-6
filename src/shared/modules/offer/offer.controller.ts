@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { Request, Response } from 'express';
-import { BaseController, HttpError, HttpMethod, HttpRequest } from '../../libs/rest/index.js';
+import { BaseController, HttpError, HttpMethod, HttpRequest, ValidateDtoMiddleware, ValidateObjectIdMiddleware } from '../../libs/rest/index.js';
 import { Component } from '../../types/index.js';
 import { Logger } from '../../libs/logger/index.js';
 import { OfferService } from './offer-service.interface.js';
@@ -11,7 +11,7 @@ import { OfferRdo } from './rdo/offer.rdo.js';
 import { StatusCodes } from 'http-status-codes';
 import { OfferIdRequestParam } from './types/offerId-request-param.type.js';
 import { UpdateOfferDto } from './dto/update-offer.dto.js';
-import { CommentService } from '../comment/index.js';
+import { CommentRdo, CommentService } from '../comment/index.js';
 import { CityRequestParam } from './types/city-request-param.type.js';
 
 @injectable()
@@ -25,25 +25,27 @@ export class OfferController extends BaseController {
 
     this.logger.info('Registering routes for OfferController...');
     this.addRoute({ path: '/', method: HttpMethod.Get, handler: this.index });
-    this.addRoute({ path: '/', method: HttpMethod.Post, handler: this.create });
-    this.addRoute({ path: '/:offerId', method: HttpMethod.Get, handler: this.find });
-    this.addRoute({ path: '/:offerId', method: HttpMethod.Patch, handler: this.update });
-    this.addRoute({ path: '/:offerId', method: HttpMethod.Delete, handler: this.delete });
+    this.addRoute({ path: '/', method: HttpMethod.Post, handler: this.create, middlewares: [new ValidateDtoMiddleware(CreateOfferDto)] });
+    this.addRoute({ path: '/:offerId', method: HttpMethod.Get, handler: this.find, middlewares: [new ValidateObjectIdMiddleware('offerId')] });
+    this.addRoute({ path: '/:offerId', method: HttpMethod.Patch, handler: this.update, middlewares: [new ValidateObjectIdMiddleware('offerId'), new ValidateDtoMiddleware(UpdateOfferDto)] });
+    this.addRoute({ path: '/:offerId', method: HttpMethod.Delete, handler: this.delete, middlewares: [new ValidateObjectIdMiddleware('offerId')] });
     this.addRoute({ path: '/premium/:city', method: HttpMethod.Get, handler: this.indexPremium });
     this.addRoute({ path: '/favorite', method: HttpMethod.Get, handler: this.indexFavorite });
-    this.addRoute({ path: '/:offerId/favorite', method: HttpMethod.Post, handler: this.addToFavorite });
-    this.addRoute({ path: '/:offerId/favorite', method: HttpMethod.Delete, handler: this.removeFromFavorite });
+    this.addRoute({ path: '/:offerId/favorite', method: HttpMethod.Post, handler: this.addToFavorite, middlewares: [new ValidateObjectIdMiddleware('offerId')] });
+    this.addRoute({ path: '/:offerId/favorite', method: HttpMethod.Delete, handler: this.removeFromFavorite, middlewares: [new ValidateObjectIdMiddleware('offerId')] });
+
+    this.addRoute({ path: '/:offerId/comments', method: HttpMethod.Get, handler: this.getComments, middlewares: [ new ValidateObjectIdMiddleware('offerId') ] });
   }
 
   public async index(
-    _req: Request, // TODO параметр limit
+    _req: Request, // TODO параметр limit (через query?)
     res: Response
   ): Promise<void> {
     const offers = await this.offerService.find();
     this.ok(res, fillDTO(PreviewOfferRdo, offers));
   }
 
-  public async find(
+  public async find( // TODO show?
     { params }: Request<OfferIdRequestParam>,
     res: Response
   ): Promise<void> {
@@ -122,6 +124,11 @@ export class OfferController extends BaseController {
   ): Promise<void> {
     await this.offerService.removeFromFavorite(params.offerId);
     this.noContent(res, void 0);
+  }
+
+  public async getComments({ params }: Request<OfferIdRequestParam>, res: Response): Promise<void> {
+    const comments = await this.commentService.findByOfferId(params.offerId);
+    this.ok(res, fillDTO(CommentRdo, comments));
   }
 
   // TODO calculateRating?

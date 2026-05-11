@@ -1,5 +1,5 @@
 import { ParamsDictionary } from 'express-serve-static-core';
 
-export type OfferIdRequestParam = {
+export type OfferIdRequestParam = { // TODO ParamOfferId
   offerId: string;
 } | ParamsDictionary;
