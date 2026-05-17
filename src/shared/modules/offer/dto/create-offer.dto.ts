@@ -1,4 +1,4 @@
-import { ArrayMaxSize, ArrayMinSize, IsArray, IsBoolean, IsEnum, IsInt, IsMongoId, Max, MaxLength, Min, MinLength } from 'class-validator';
+import { ArrayMaxSize, ArrayMinSize, IsArray, IsBoolean, IsEnum, IsInt, Max, MaxLength, Min, MinLength } from 'class-validator';
 import { AmenityType, City, HousingType, Location } from '../../../types/index.js';
 import { CreateOfferValidationMessage } from './create-offer.messages.js';
 
@@ -49,7 +49,6 @@ export class CreateOfferDto {
   @IsEnum(AmenityType, { each: true, message: CreateOfferValidationMessage.amenities.invalidFormat })
   public amenities: AmenityType[];
 
-  @IsMongoId({ message: CreateOfferValidationMessage.userId.invalidId })
   public userId: string;
 
   // TODO валидатор для координат?
