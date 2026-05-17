@@ -259,8 +259,8 @@ paths:
         "404":
           $ref: "#/components/responses/notFoundError"
 
-    # TODO patch для коммента?
-    # TODO delete для коммента?
+    # TODO patch для коммента? (не предусмотрено)
+    # TODO delete для коммента? (не предусмотрено)
 
   /users/register:
     post:
