@@ -33,9 +33,6 @@ export class UpdateOfferDto {
   public isPremium?: boolean;
 
   @IsOptional()
-  public isFavorite?: boolean; // TODO должен ли этот параметр передаваться при создании предложения?? есть же отдельные ручки для управления избранными
-
-  @IsOptional()
   @IsEnum(HousingType, { message: CreateUpdateOfferMessage.housingType.invalidFormat })
   public housingType?: HousingType;
 
@@ -64,4 +61,6 @@ export class UpdateOfferDto {
 
   @IsOptional()
   public location?: Location;
+
+  public userId: string;
 }
