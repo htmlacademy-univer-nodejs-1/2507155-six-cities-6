@@ -84,7 +84,7 @@ export class OfferController extends BaseController {
     this.created(res, void 0);
   }
 
-  public async removeFromFavorite({ params, tokenPayload  }: Request<OfferIdRequestParam>, res: Response): Promise<void> {
+  public async removeFromFavorite({ params, tokenPayload }: Request<OfferIdRequestParam>, res: Response): Promise<void> {
     await this.offerService.removeFromFavorite(params.offerId, tokenPayload.id);
     this.noContent(res, void 0);
   }
@@ -94,7 +94,7 @@ export class OfferController extends BaseController {
     this.ok(res, fillDTO(CommentRdo, comments));
   }
 
-  public async createComment({ body, params, tokenPayload  }: CreateCommentRequest, res: Response): Promise<void> {
+  public async createComment({ body, params, tokenPayload }: CreateCommentRequest, res: Response): Promise<void> {
     const comment = await this.commentService.create(params.offerId, { ...body, userId: tokenPayload.id });
     await this.offerService.incCommentCount(params.offerId);
     this.created(res, fillDTO(CommentRdo, comment));
