@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import { ExceptionFilter } from '../../libs/rest/index.js';
 import { Component } from '../../types/index.js';
 import { Logger } from '../../libs/logger/index.js';
-import { BaseUserException } from './errors/index.js';
+import { BaseAuthException } from './errors/index.js';
 
 @injectable()
 export class AuthExceptionFilter implements ExceptionFilter {
@@ -14,7 +14,7 @@ export class AuthExceptionFilter implements ExceptionFilter {
   }
 
   public catch(error: unknown, _req: Request, res: Response, next: NextFunction): void {
-    if (! (error instanceof BaseUserException)) {
+    if (! (error instanceof BaseAuthException)) {
       return next(error);
     }
 

@@ -1,6 +1,7 @@
 # Предложения
 ## Получить список предложений
 GET http://localhost:4000/offers?limit=1 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuc0BvdmVybG9vay5uZXQiLCJpZCI6IjY0NzBiYzM4M2UzMGRiNjc5ZGZhYzJkMiIsImlhdCI6MTY4NTk3NTQ4MiwiZXhwIjoxNjg2MTQ4MjgyfQ.Gq2-B1egouAnMxmXlR2ElVT6wCa97PS6lxzVI8LnGvo
 Content-Type: application/json
 
 ###
@@ -24,7 +25,6 @@ Content-Type: application/json
     "picture-6.jpg"
   ],
   "isPremium": false,
-  "isFavorite": false,
   "housingType": "apartment",
   "roomsCount": 1,
   "guestsCount": 2,
@@ -34,7 +34,6 @@ Content-Type: application/json
     "Laptop friendly workspace",
     "Washer"
   ],
-  "userId": "69f21d1571287e7888ed7e36",
   "location": {
     "latitude": 40.3235,
     "longitude": 60.3582
@@ -45,6 +44,7 @@ Content-Type: application/json
 
 ## Получить предложение по id
 GET http://localhost:4000/offers/6a01ffe32bb7816c5d20345a HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuc0BvdmVybG9vay5uZXQiLCJpZCI6IjY0NzBiYzM4M2UzMGRiNjc5ZGZhYzJkMiIsImlhdCI6MTY4NTk3NTQ4MiwiZXhwIjoxNjg2MTQ4MjgyfQ.Gq2-B1egouAnMxmXlR2ElVT6wCa97PS6lxzVI8LnGvo
 Content-Type: application/json
 
 ###
@@ -70,6 +70,7 @@ Content-Type: application/json
 
 ## Получить список премиальных предложений для города
 GET http://localhost:4000/offers/premium/Paris HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuc0BvdmVybG9vay5uZXQiLCJpZCI6IjY0NzBiYzM4M2UzMGRiNjc5ZGZhYzJkMiIsImlhdCI6MTY4NTk3NTQ4MiwiZXhwIjoxNjg2MTQ4MjgyfQ.Gq2-B1egouAnMxmXlR2ElVT6wCa97PS6lxzVI8LnGvo
 Content-Type: application/json
 
 ###
@@ -108,7 +109,8 @@ Content-Type: application/json
 {
   "text": "Как обстоят дела с коробками? Фирменная упаковка сохранена?",
   "rating": 4.4,
-  "userId": "69f21d1571287e7888ed7e36"
 }
 
 ###
+
+### TODO дописать (впрочем это надо сделать у всех)
