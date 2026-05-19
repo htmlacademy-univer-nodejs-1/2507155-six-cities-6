@@ -131,7 +131,7 @@ export class DefaultOfferService implements OfferService {
 
   //
 
-  private userPopulatePipeline(): PipelineStage[] {
+  private userPopulatePipeline(): PipelineStage[] { // TODO вынести в отдельный файл
     return [
       {
         $lookup: {
