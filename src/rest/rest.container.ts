@@ -15,7 +15,7 @@ export function createRestApplicationContainer() {
   restApplicationContainer.bind<Logger>(Component.Logger).to(PinoLogger).inSingletonScope();
   restApplicationContainer.bind<Config<RestSchema>>(Component.Config).to(RestConfig).inSingletonScope();
   restApplicationContainer.bind<DatabaseClient>(Component.DatabaseClient).to(MongoDatabaseClient).inSingletonScope();
-  restApplicationContainer.bind<ExceptionFilter>(Component.ExceptionFilter).to(DefaultExceptionFilter).inSingletonScope();
+  restApplicationContainer.bind<ExceptionFilter>(Component.DefaultExceptionFilter).to(DefaultExceptionFilter).inSingletonScope();
   restApplicationContainer.bind<ExceptionFilter>(Component.HttpExceptionFilter).to(HttpErrorExceptionFilter).inSingletonScope();
   restApplicationContainer.bind<ExceptionFilter>(Component.ValidationExceptionFilter).to(ValidationExceptionFilter).inSingletonScope();
   restApplicationContainer.bind<PathTransformer>(Component.PathTransformer).to(PathTransformer).inSingletonScope();

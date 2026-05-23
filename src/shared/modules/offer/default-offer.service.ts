@@ -129,6 +129,15 @@ export class DefaultOfferService implements OfferService {
       .exists({_id: documentId})) !== null;
   }
 
+  public async getOwnerId(documentId: string): Promise<string | null> {
+    const offer = await this.offerModel
+      .findById(documentId)
+      .select('userId')
+      .exec();
+
+    return offer ? offer.userId.toString() : null;
+  }
+
   //
 
   private userPopulatePipeline(): PipelineStage[] { // TODO вынести в отдельный файл

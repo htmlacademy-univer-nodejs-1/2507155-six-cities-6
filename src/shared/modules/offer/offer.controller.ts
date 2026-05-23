@@ -13,6 +13,7 @@ import { UpdateOfferDto } from './dto/update-offer.dto.js';
 import { CommentRdo, CommentService, CreateCommentDto, CreateCommentRequest } from '../comment/index.js';
 import { CityRequestParam } from './types/city-request-param.type.js';
 import { DocumentExistsMiddleware } from '../../libs/rest/middleware/document-exists.middleware.js';
+import { DocumentOwnerMiddleware } from '../../libs/rest/middleware/document-owner.middleware.js';
 
 @injectable()
 export class OfferController extends BaseController {
@@ -27,8 +28,8 @@ export class OfferController extends BaseController {
     this.addRoute({ path: '/', method: HttpMethod.Get, handler: this.index });
     this.addRoute({ path: '/', method: HttpMethod.Post, handler: this.create, middlewares: [new PrivateRouteMiddleware(), new ValidateDtoMiddleware(CreateOfferDto)] });
     this.addRoute({ path: '/:offerId', method: HttpMethod.Get, handler: this.show, middlewares: [new ValidateObjectIdMiddleware('offerId'), new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')] });
-    this.addRoute({ path: '/:offerId', method: HttpMethod.Patch, handler: this.update, middlewares: [new PrivateRouteMiddleware(), new ValidateObjectIdMiddleware('offerId'), new ValidateDtoMiddleware(UpdateOfferDto), new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')] });
-    this.addRoute({ path: '/:offerId', method: HttpMethod.Delete, handler: this.delete, middlewares: [new PrivateRouteMiddleware(), new ValidateObjectIdMiddleware('offerId'), new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')] });
+    this.addRoute({ path: '/:offerId', method: HttpMethod.Patch, handler: this.update, middlewares: [new PrivateRouteMiddleware(), new ValidateObjectIdMiddleware('offerId'), new ValidateDtoMiddleware(UpdateOfferDto), new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'), new DocumentOwnerMiddleware(this.offerService, 'Offer', 'offerId')] });
+    this.addRoute({ path: '/:offerId', method: HttpMethod.Delete, handler: this.delete, middlewares: [new PrivateRouteMiddleware(), new ValidateObjectIdMiddleware('offerId'), new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'), new DocumentOwnerMiddleware(this.offerService, 'Offer', 'offerId')] });
     this.addRoute({ path: '/premium/:city', method: HttpMethod.Get, handler: this.indexPremium });
     this.addRoute({ path: '/favorite', method: HttpMethod.Get, handler: this.indexFavorite, middlewares: [new PrivateRouteMiddleware()] });
     this.addRoute({ path: '/:offerId/favorite', method: HttpMethod.Post, handler: this.addToFavorite, middlewares: [new PrivateRouteMiddleware(), new ValidateObjectIdMiddleware('offerId'), new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')] });

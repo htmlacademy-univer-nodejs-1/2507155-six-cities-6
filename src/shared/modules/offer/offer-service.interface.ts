@@ -2,9 +2,9 @@ import { CreateOfferDto } from './dto/create-offer.dto.js';
 import { DocumentType } from '@typegoose/typegoose';
 import { OfferEntity } from './offer.entity.js';
 import { UpdateOfferDto } from './dto/update-offer.dto.js';
-import { DocumentExists } from '../../types/index.js';
+import { DocumentExists, DocumentOwner } from '../../types/index.js';
 
-export interface OfferService extends DocumentExists {
+export interface OfferService extends DocumentExists, DocumentOwner {
   create(dto: CreateOfferDto): Promise<DocumentType<OfferEntity>>;
   findById(offerId: string, userId?: string): Promise<DocumentType<OfferEntity> | null>;
   find(count?: number, userId?: string): Promise<DocumentType<OfferEntity>[]>;
@@ -14,6 +14,6 @@ export interface OfferService extends DocumentExists {
   findFavorite(userId: string): Promise<DocumentType<OfferEntity>[]>;
   addToFavorite(offerId: string, userId: string): Promise<void>;
   removeFromFavorite(offerId: string, userId: string): Promise<void>;
-  incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null>; // TODO а нужен ли?
+  incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null>;
   calculateRating(offerId: string): Promise<DocumentType<OfferEntity> | null>; // TODO а нужен ли?
 }

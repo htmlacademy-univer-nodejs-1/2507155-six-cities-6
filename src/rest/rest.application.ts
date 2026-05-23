@@ -17,7 +17,7 @@ export class RestApplication {
     @inject(Component.Logger) private readonly logger: Logger,
     @inject(Component.Config) private readonly config: Config<RestSchema>,
     @inject(Component.DatabaseClient) private readonly databaseClient: DatabaseClient,
-    @inject(Component.ExceptionFilter) private readonly appExceptionFilter: ExceptionFilter,
+    @inject(Component.DefaultExceptionFilter) private readonly defaultExceptionFilter: ExceptionFilter,
     @inject(Component.UserController) private readonly userController: Controller,
     @inject(Component.OfferController) private readonly offerController: Controller,
     @inject(Component.AuthExceptionFilter) private readonly authExceptionFilter: ExceptionFilter,
@@ -69,7 +69,7 @@ export class RestApplication {
     this.server.use(this.authExceptionFilter.catch.bind(this.authExceptionFilter));
     this.server.use(this.validationExceptionFilter.catch.bind(this.validationExceptionFilter));
     this.server.use(this.httpExceptionFilter.catch.bind(this.httpExceptionFilter));
-    this.server.use(this.appExceptionFilter.catch.bind(this.appExceptionFilter)); // TODO переименовать?
+    this.server.use(this.defaultExceptionFilter.catch.bind(this.defaultExceptionFilter));
   }
 
   public async init() {

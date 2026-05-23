@@ -11,3 +11,4 @@ export * from './sort-type.enum.js';
 export * from './city.enum.js';
 
 export * from './document-exists.interface.js';
+export * from './document-owner.interface.js';
