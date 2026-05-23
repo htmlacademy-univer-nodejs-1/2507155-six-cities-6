@@ -8,7 +8,4 @@ export const CreateCommentMessages = {
     min: 'minimum rating value must be 1',
     max: 'maximum rating value must be 5'
   },
-  userId: {
-    invalidFormat: 'userId field must be a valid id'
-  },
 } as const;

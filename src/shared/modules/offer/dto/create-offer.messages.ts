@@ -42,7 +42,4 @@ export const CreateOfferValidationMessage = {
     isArray: 'amenities must be an array',
     invalidFormat: 'amenities items must be Breakfast, Air conditioning, Laptop friendly workspace, Baby seat, Washer, Towels or Fridge'
   },
-  userId: {
-    invalidId: 'userId field must be a valid id',
-  },
 } as const;

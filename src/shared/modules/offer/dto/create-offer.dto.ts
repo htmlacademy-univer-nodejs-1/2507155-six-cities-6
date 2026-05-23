@@ -1,4 +1,4 @@
-import { ArrayMaxSize, ArrayMinSize, IsArray, IsBoolean, IsEnum, IsInt, IsMongoId, Max, MaxLength, Min, MinLength } from 'class-validator';
+import { ArrayMaxSize, ArrayMinSize, IsArray, IsBoolean, IsEnum, IsInt, Max, MaxLength, Min, MinLength } from 'class-validator';
 import { AmenityType, City, HousingType, Location } from '../../../types/index.js';
 import { CreateOfferValidationMessage } from './create-offer.messages.js';
 
@@ -25,8 +25,6 @@ export class CreateOfferDto {
   @IsBoolean({ message: CreateOfferValidationMessage.isPremium.invalidFormat })
   public isPremium: boolean;
 
-  public isFavorite?: boolean; // TODO должен ли этот параметр передаваться при создании предложения?? есть же отдельные ручки для управления избранными
-
   @IsEnum(HousingType, { message: CreateOfferValidationMessage.housingType.invalidFormat })
   public housingType: HousingType;
 
@@ -49,9 +47,8 @@ export class CreateOfferDto {
   @IsEnum(AmenityType, { each: true, message: CreateOfferValidationMessage.amenities.invalidFormat })
   public amenities: AmenityType[];
 
-  @IsMongoId({ message: CreateOfferValidationMessage.userId.invalidId })
-  public userId: string;
-
   // TODO валидатор для координат?
   public location: Location;
+
+  public userId: string;
 }
