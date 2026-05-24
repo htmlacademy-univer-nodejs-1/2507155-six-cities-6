@@ -7,9 +7,10 @@ import { DatabaseClient, MongoDatabaseClient } from '../../shared/libs/database-
 import { Logger } from '../../shared/libs/logger/index.js';
 import { ConsoleLogger } from '../../shared/libs/logger/console.logger.js';
 import { DefaultUserService, UserModel } from '../../shared/modules/user/index.js';
-import { DEFAULT_DB_PORT, DEFAULT_USER_PASSWORD } from './command.constant.js';
+import { DEFAULT_USER_PASSWORD } from './command.constant.js';
 import { Offer } from '../../shared/types/index.js';
 import { CommentModel } from '../../shared/modules/comment/comment.entity.js';
+import { FavoriteModel } from '../../shared/modules/favorite/favorite.entity.js';
 
 export class ImportCommand implements Command {
   private userService: UserService;
@@ -19,11 +20,11 @@ export class ImportCommand implements Command {
   private salt: string;
 
   constructor() {
-    this.onImportedLine = this.onImportedLine.bind(this); // TODO адаптировать импорт под изменения бд
+    this.onImportedLine = this.onImportedLine.bind(this);
     this.onCompleteImport = this.onCompleteImport.bind(this);
 
-    this.logger = new ConsoleLogger(); // TODO DI? (т.к. это cli, то скорее нет)
-    this.offerService = new DefaultOfferService(this.logger, OfferModel, CommentModel);
+    this.logger = new ConsoleLogger();
+    this.offerService = new DefaultOfferService(this.logger, OfferModel, CommentModel, FavoriteModel);
     this.userService = new DefaultUserService(this.logger, UserModel);
     this.databaseClient = new MongoDatabaseClient(this.logger);
   }
@@ -48,19 +49,16 @@ export class ImportCommand implements Command {
     await this.offerService.create({
       title: offer.title,
       description: offer.description,
-      //publishDate: offer.publishDate, // TODO вернуть?
       city: offer.city,
       previewImage: offer.previewImage,
       housingImages: offer.housingImages,
       isPremium: offer.isPremium,
-      isFavorite: offer.isFavorite,
-      //rating: offer.rating, // TODO как быть с рейтингом?
       housingType: offer.housingType,
       roomsCount: offer.roomsCount,
       guestsCount: offer.guestsCount,
       price: offer.price,
       amenities: offer.amenities,
-      authorId: user.id,
+      userId: user.id,
       location: offer.location
     });
   }
@@ -69,13 +67,13 @@ export class ImportCommand implements Command {
     return '--import';
   }
 
-  public async execute(filename: string, login: string, password: string, host: string, dbname: string, salt: string): Promise<void> {
-    const uri = getMongoURI(login, password, host, DEFAULT_DB_PORT, dbname);
+  public async execute(filename: string, login: string, password: string, host: string, port: string, dbname: string, salt: string): Promise<void> {
+    const uri = getMongoURI(login, password, host, port, dbname);
     this.salt = salt;
 
     await this.databaseClient.connect(uri);
 
-    const fileReader = new TSVFileReader(filename.trim()); // TODO DI? (т.к. это cli, то скорее нет)
+    const fileReader = new TSVFileReader(filename.trim());
 
     fileReader.on('line', this.onImportedLine);
     fileReader.on('end', this.onCompleteImport);

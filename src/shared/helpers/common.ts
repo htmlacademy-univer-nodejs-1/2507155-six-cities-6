@@ -42,6 +42,6 @@ export function reduceValidationErrors(errors: ValidationError[]): ValidationErr
   }));
 }
 
-export function getFullServerPath(host: string, port: number) { // TODO протокол передавать в параметре
+export function getFullServerPath(host: string, port: number) { // TODO передавать протокол в параметре
   return `http://${host}:${port}`;
 }

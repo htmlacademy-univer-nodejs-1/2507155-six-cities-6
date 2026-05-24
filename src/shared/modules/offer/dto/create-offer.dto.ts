@@ -1,50 +1,50 @@
 import { ArrayMaxSize, ArrayMinSize, IsArray, IsBoolean, IsEnum, IsInt, Max, MaxLength, Min, MinLength } from 'class-validator';
 import { AmenityType, City, HousingType, Location } from '../../../types/index.js';
-import { CreateOfferValidationMessage } from './create-offer.messages.js';
+import { OfferValidationMessages } from './offer.messages.js';
 
 export class CreateOfferDto {
-  @MinLength(10, { message: CreateOfferValidationMessage.title.minLength })
-  @MaxLength(100, { message: CreateOfferValidationMessage.title.maxLength })
+  @MinLength(10, { message: OfferValidationMessages.title.minLength })
+  @MaxLength(100, { message: OfferValidationMessages.title.maxLength })
   public title: string;
 
-  @MinLength(20, { message: CreateOfferValidationMessage.description.minLength })
-  @MaxLength(1024, { message: CreateOfferValidationMessage.description.maxLength })
+  @MinLength(20, { message: OfferValidationMessages.description.minLength })
+  @MaxLength(1024, { message: OfferValidationMessages.description.maxLength })
   public description: string;
 
-  @IsEnum(City, { message: CreateOfferValidationMessage.city.invalidFormat })
+  @IsEnum(City, { message: OfferValidationMessages.city.invalidFormat })
   public city: City;
 
-  @MaxLength(256, { message: CreateOfferValidationMessage.previewImage.maxLength })
+  @MaxLength(256, { message: OfferValidationMessages.previewImage.maxLength }) // TODO IsUrl?
   public previewImage: string;
 
-  @IsArray({ message: CreateOfferValidationMessage.housingImages.invalidFormat })
-  @ArrayMinSize(6, { message: CreateOfferValidationMessage.housingImages.size })
-  @ArrayMaxSize(6, { message: CreateOfferValidationMessage.housingImages.size })
+  @IsArray({ message: OfferValidationMessages.housingImages.invalidFormat })
+  @ArrayMinSize(6, { message: OfferValidationMessages.housingImages.size })
+  @ArrayMaxSize(6, { message: OfferValidationMessages.housingImages.size })
   public housingImages: string[];
 
-  @IsBoolean({ message: CreateOfferValidationMessage.isPremium.invalidFormat })
+  @IsBoolean({ message: OfferValidationMessages.isPremium.invalidFormat })
   public isPremium: boolean;
 
-  @IsEnum(HousingType, { message: CreateOfferValidationMessage.housingType.invalidFormat })
+  @IsEnum(HousingType, { message: OfferValidationMessages.housingType.invalidFormat })
   public housingType: HousingType;
 
-  @IsInt({ message: CreateOfferValidationMessage.roomsCount.invalidFormat })
-  @Min(1, { message: CreateOfferValidationMessage.roomsCount.minValue })
-  @Max(8, { message: CreateOfferValidationMessage.roomsCount.maxValue })
+  @IsInt({ message: OfferValidationMessages.roomsCount.invalidFormat })
+  @Min(1, { message: OfferValidationMessages.roomsCount.minValue })
+  @Max(8, { message: OfferValidationMessages.roomsCount.maxValue })
   public roomsCount: number;
 
-  @IsInt({ message: CreateOfferValidationMessage.guestsCount.invalidFormat })
-  @Min(1, { message: CreateOfferValidationMessage.guestsCount.minValue })
-  @Max(10, { message: CreateOfferValidationMessage.guestsCount.maxValue })
+  @IsInt({ message: OfferValidationMessages.guestsCount.invalidFormat })
+  @Min(1, { message: OfferValidationMessages.guestsCount.minValue })
+  @Max(10, { message: OfferValidationMessages.guestsCount.maxValue })
   public guestsCount: number;
 
-  @IsInt({ message: CreateOfferValidationMessage.price.invalidFormat })
-  @Min(100, { message: CreateOfferValidationMessage.price.minValue })
-  @Max(100000, { message: CreateOfferValidationMessage.price.maxValue })
+  @IsInt({ message: OfferValidationMessages.price.invalidFormat })
+  @Min(100, { message: OfferValidationMessages.price.minValue })
+  @Max(100000, { message: OfferValidationMessages.price.maxValue })
   public price: number;
 
-  @IsArray({ message: CreateOfferValidationMessage.amenities.isArray })
-  @IsEnum(AmenityType, { each: true, message: CreateOfferValidationMessage.amenities.invalidFormat })
+  @IsArray({ message: OfferValidationMessages.amenities.isArray })
+  @IsEnum(AmenityType, { each: true, message: OfferValidationMessages.amenities.invalidFormat })
   public amenities: AmenityType[];
 
   // TODO валидатор для координат?

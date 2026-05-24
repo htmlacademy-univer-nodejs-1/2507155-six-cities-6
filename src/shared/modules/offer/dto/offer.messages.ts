@@ -1,4 +1,4 @@
-export const CreateOfferValidationMessage = {
+export const OfferValidationMessages = {
   title: {
     minLength: 'Minimum title length must be 10',
     maxLength: 'Maximum title length must be 100',
@@ -11,7 +11,8 @@ export const CreateOfferValidationMessage = {
     invalidFormat: 'city must be Paris, Cologne, Brussels, Amsterdam, Hamburg or Dusseldorf'
   },
   previewImage: {
-    maxLength: 'Too short for field «image»',
+    invalidFormat: 'image is required',
+    maxLength: 'too long for field image. Maximum length is 256',
   },
   housingImages: {
     invalidFormat: 'housingImages must be an array',

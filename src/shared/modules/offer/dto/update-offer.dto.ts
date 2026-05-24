@@ -1,66 +1,64 @@
 import { AmenityType, City, HousingType, Location } from '../../../types/index.js';
 import { ArrayMaxSize, ArrayMinSize, IsArray, IsBoolean, IsEnum, IsInt, IsOptional, IsString, Max, MaxLength, Min, MinLength, } from 'class-validator';
-import { CreateUpdateOfferMessage } from './update-offer.messages.js';
+import { OfferValidationMessages } from './offer.messages.js';
 
 export class UpdateOfferDto {
   @IsOptional()
-  @MinLength(10,{ message: CreateUpdateOfferMessage.title.minLength })
-  @MaxLength(100, { message: CreateUpdateOfferMessage.title.maxLength })
+  @MinLength(10,{ message: OfferValidationMessages.title.minLength })
+  @MaxLength(100, { message: OfferValidationMessages.title.maxLength })
   public title?: string;
 
   @IsOptional()
-  @MinLength(20, { message: CreateUpdateOfferMessage.description.minLength })
-  @MaxLength(1024, { message: CreateUpdateOfferMessage.description.maxLength })
+  @MinLength(20, { message: OfferValidationMessages.description.minLength })
+  @MaxLength(1024, { message: OfferValidationMessages.description.maxLength })
   public description?: string;
 
   @IsOptional()
-  @IsEnum(City, { message: CreateUpdateOfferMessage.city.invalidFormat })
+  @IsEnum(City, { message: OfferValidationMessages.city.invalidFormat })
   public city?: City;
 
   @IsOptional()
-  @IsString({ message: CreateUpdateOfferMessage.previewImage.invalidFormat })
-  @MaxLength(256, { message: CreateUpdateOfferMessage.previewImage.maxLength })
+  @IsString({ message: OfferValidationMessages.previewImage.invalidFormat })
+  @MaxLength(256, { message: OfferValidationMessages.previewImage.maxLength })
   public previewImage?: string;
 
   @IsOptional()
-  @IsArray({ message: CreateUpdateOfferMessage.housingImages.invalidFormat })
-  @ArrayMinSize(6, { message: CreateUpdateOfferMessage.housingImages.size })
-  @ArrayMaxSize(6, { message: CreateUpdateOfferMessage.housingImages.size })
+  @IsArray({ message: OfferValidationMessages.housingImages.invalidFormat })
+  @ArrayMinSize(6, { message: OfferValidationMessages.housingImages.size })
+  @ArrayMaxSize(6, { message: OfferValidationMessages.housingImages.size })
   public housingImages?: string[];
 
   @IsOptional()
-  @IsBoolean({ message: CreateUpdateOfferMessage.isPremium.invalidFormat })
+  @IsBoolean({ message: OfferValidationMessages.isPremium.invalidFormat })
   public isPremium?: boolean;
 
   @IsOptional()
-  @IsEnum(HousingType, { message: CreateUpdateOfferMessage.housingType.invalidFormat })
+  @IsEnum(HousingType, { message: OfferValidationMessages.housingType.invalidFormat })
   public housingType?: HousingType;
 
   @IsOptional()
-  @IsInt({ message: CreateUpdateOfferMessage.roomsCount.invalidFormat })
-  @Min(1, { message: CreateUpdateOfferMessage.roomsCount.minValue })
-  @Max(8, { message: CreateUpdateOfferMessage.roomsCount.maxValue })
+  @IsInt({ message: OfferValidationMessages.roomsCount.invalidFormat })
+  @Min(1, { message: OfferValidationMessages.roomsCount.minValue })
+  @Max(8, { message: OfferValidationMessages.roomsCount.maxValue })
   public roomsCount?: number;
 
   @IsOptional()
-  @IsInt({ message: CreateUpdateOfferMessage.guestsCount.invalidFormat })
-  @Min(1, { message: CreateUpdateOfferMessage.guestsCount.minValue })
-  @Max(10, { message: CreateUpdateOfferMessage.guestsCount.maxValue })
+  @IsInt({ message: OfferValidationMessages.guestsCount.invalidFormat })
+  @Min(1, { message: OfferValidationMessages.guestsCount.minValue })
+  @Max(10, { message: OfferValidationMessages.guestsCount.maxValue })
   public guestsCount?: number;
 
   @IsOptional()
-  @IsInt({ message: CreateUpdateOfferMessage.price.invalidFormat })
-  @Min(100, { message: CreateUpdateOfferMessage.price.minValue })
-  @Max(100000, { message: CreateUpdateOfferMessage.price.maxValue })
+  @IsInt({ message: OfferValidationMessages.price.invalidFormat })
+  @Min(100, { message: OfferValidationMessages.price.minValue })
+  @Max(100000, { message: OfferValidationMessages.price.maxValue })
   public price?: number;
 
   @IsOptional()
-  @IsArray({ message: CreateUpdateOfferMessage.amenities.isArray })
-  @IsEnum(AmenityType, { each: true, message: CreateUpdateOfferMessage.amenities.invalidFormat })
+  @IsArray({ message: OfferValidationMessages.amenities.isArray })
+  @IsEnum(AmenityType, { each: true, message: OfferValidationMessages.amenities.invalidFormat })
   public amenities?: AmenityType[];
 
   @IsOptional()
   public location?: Location;
-
-  public userId: string;
 }

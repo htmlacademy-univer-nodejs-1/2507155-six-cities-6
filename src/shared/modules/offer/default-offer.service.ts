@@ -37,8 +37,8 @@ export class DefaultOfferService implements OfferService {
     return offer ?? null;
   }
 
-  public async find(count?: number, userId?: string): Promise<DocumentType<OfferEntity>[]> {
-    const limit = count ?? DEFAULT_OFFER_COUNT;
+  public async find(count: string, userId?: string): Promise<DocumentType<OfferEntity>[]> {
+    const limit = count !== undefined ? parseInt(count) : DEFAULT_OFFER_COUNT;
     return this.offerModel
       .aggregate([
         { $sort: { createdAt: SortType.Down } },
@@ -99,16 +99,14 @@ export class DefaultOfferService implements OfferService {
 
   public async incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
-      .findByIdAndUpdate(offerId, {'$inc': { commentCount: 1, }}).exec();
+      .findByIdAndUpdate(offerId, {'$inc': { commentsCount: 1, }}).exec();
   }
 
   public async calculateRating(offerId: string): Promise<DocumentType<OfferEntity> | null> {
     const avgRating = await this.commentModel
       .aggregate([
         {
-          $match: {
-            offerId: offerId,
-          },
+          $match: { offerId: new Types.ObjectId(offerId) },
         },
         {
           $group: {
