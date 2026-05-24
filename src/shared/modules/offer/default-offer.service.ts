@@ -38,7 +38,7 @@ export class DefaultOfferService implements OfferService {
   }
 
   public async find(count: string, userId?: string): Promise<DocumentType<OfferEntity>[]> {
-    const limit = count !== undefined ? parseInt(count) : DEFAULT_OFFER_COUNT;
+    const limit = count !== undefined ? parseInt(count, 10) : DEFAULT_OFFER_COUNT; // TODO валидацию параметра limit (чтоб исключить все не числа)
     return this.offerModel
       .aggregate([
         { $sort: { createdAt: SortType.Down } },

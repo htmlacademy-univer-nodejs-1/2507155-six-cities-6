@@ -31,8 +31,7 @@ export class UserController extends BaseController {
     this.addRoute({ path: '/register', method: HttpMethod.Post, handler: this.create, middlewares: [new PrivateRouteMiddleware(true), new ValidateDtoMiddleware(CreateUserDto)] });
     this.addRoute({ path: '/login', method: HttpMethod.Post, handler: this.login, middlewares: [new PrivateRouteMiddleware(true), new ValidateDtoMiddleware(LoginUserDto)] });
     this.addRoute({ path: '/login', method: HttpMethod.Get, handler: this.checkAuthenticate, middlewares: [new PrivateRouteMiddleware()] });
-    this.addRoute({ path: '/:userId/avatar', method: HttpMethod.Post, handler: this.uploadAvatar, middlewares: [new ValidateObjectIdMiddleware('userId'), new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'avatar'), new DocumentExistsMiddleware(this.userService, 'User', 'userId')] }); // TODO DocumentOwnerMiddleware?
-    // TODO проверка на существование документа (миддлвару)? (+ проверить что будет без него - по идее просто 500 ошибка)
+    this.addRoute({ path: '/:userId/avatar', method: HttpMethod.Post, handler: this.uploadAvatar, middlewares: [new ValidateObjectIdMiddleware('userId'), new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'avatar'), new DocumentExistsMiddleware(this.userService, 'User', 'userId')] }); // TODO DocumentOwnerMiddleware? (пока не понятно)
   }
 
   public async create({ body }: CreateUserRequest, res: Response): Promise<void> {
@@ -74,7 +73,6 @@ export class UserController extends BaseController {
     this.ok(res, fillDTO(UserRdo, foundedUser));
   }
 
-  // TODO добавить в спеку
   public async uploadAvatar({ params, file }: Request, res: Response) {
     const { userId } = params;
     const uploadFile = { avatar: file?.filename };

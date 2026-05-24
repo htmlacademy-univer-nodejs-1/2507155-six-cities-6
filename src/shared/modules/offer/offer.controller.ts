@@ -85,7 +85,7 @@ export class OfferController extends BaseController {
   private cities = new Set<string>(Object.values(City));
   private isCityExists(city: string): boolean {
     return this.cities.has(city);
-  };
+  }
 
   public async indexFavorite({ tokenPayload }: Request, res: Response): Promise<void> {
     const favoriteOffers = await this.offerService.findFavorite(tokenPayload.id);
