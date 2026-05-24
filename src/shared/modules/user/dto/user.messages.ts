@@ -1,4 +1,4 @@
-export const CreateUserMessages = {
+export const UserValidationMessages = {
   name: {
     invalidFormat: 'name is required',
     lengthField: 'min length is 1, max is 15',

@@ -1,4 +1,7 @@
 openapi: 3.1.0
+servers:
+  - url: http://localhost:4000
+    description: "Локальный сервер"
 info:
   title: API сервер для проекта «Шесть городов».
   description: |-
@@ -78,6 +81,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/offer"
+        "400":
+          $ref: "#/components/responses/invalidIdError"
         "404":
           $ref: "#/components/responses/notFoundError"
     patch:
@@ -123,6 +128,8 @@ paths:
       responses:
         "204":
           description: Предложение удалено.
+        "400":
+          $ref: "#/components/responses/invalidIdError"
         "401":
           $ref: "#/components/responses/unauthorizedError"
         "403":
@@ -188,6 +195,8 @@ paths:
       responses:
         "201":
           description: Предложение добавлено в избранные.
+        "400":
+          $ref: "#/components/responses/invalidIdError"
         "401":
           $ref: "#/components/responses/unauthorizedError"
         '404':
@@ -204,6 +213,8 @@ paths:
       responses:
         "204":
           description: Предложение удалено из избранных.
+        "400":
+          $ref: "#/components/responses/invalidIdError"
         "401":
           $ref: "#/components/responses/unauthorizedError"
         "404":
@@ -227,6 +238,8 @@ paths:
                 maxItems: 50
                 items:
                   $ref: "#/components/schemas/comment"
+        "400":
+          $ref: "#/components/responses/invalidIdError"
         "404":
           $ref: "#/components/responses/notFoundError"
     post:
@@ -259,9 +272,6 @@ paths:
         "404":
           $ref: "#/components/responses/notFoundError"
 
-    # TODO patch для коммента? (не предусмотрено)
-    # TODO delete для коммента? (не предусмотрено)
-
   /users/register:
     post:
       tags:
@@ -284,9 +294,10 @@ paths:
                 $ref: '#/components/schemas/user'
         "400":
           $ref: "#/components/responses/validationError"
+        "403":
+          description: Регистрироваться могут только неавторизованные пользователи.
         "409":
           description: Пользователь с таким email уже существует.
-
 
   /users/login:
     post:
@@ -307,11 +318,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/authToken"
+                $ref: "#/components/schemas/loggedUser"
         "400":
           description: Неверный формат email или пароля.
         "401":
           description: Неверный email или пароль.
+        "404": # TODO этой ошибки быть не должно, но она есть
+          description: Пользователь не найден.
     get:
       tags:
         - users
@@ -329,19 +342,42 @@ paths:
         "401":
           $ref: "#/components/responses/unauthorizedError"
 
-  /users/logout:
+  /users/{userId}/avatar:
     post:
       tags:
         - users
-      summary: Выход
-      description: Выполняет выход пользователя.
-      security:
-        - bearerAuth: []
+      summary: Загрузка аватара пользователя
+      description: Загружает изображение аватара для пользователя
+      parameters:
+        - $ref: "#/components/parameters/userId"
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - avatar
+              properties:
+                avatar:
+                  type: string
+                  format: binary
+                  description: Файл изображения формата .png, .jpg, .jpeg
       responses:
-        "204":
-          description: Выход успешно выполнен.
-        "401":
-          $ref: "#/components/responses/unauthorizedError"
+        "201":
+          description: Аватар загружен
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  filePath:
+                    type: string
+                    example: uploads/5GWY6_SgIrPwRo-cRfGyS.jpg
+        "400":
+          description: "#/components/responses/invalidIdError"
+        "404":
+          description: Пользователь не найден
 
   # TODO patch для юзера?
   # TODO delete для юзера??
@@ -360,6 +396,12 @@ components:
       required: true
       schema:
         type: string
+    userId:
+      name: userId
+      in: path
+      required: true
+      schema:
+        type: string
 
   responses:
     validationError:
@@ -368,6 +410,8 @@ components:
       description: Ошибка авторизации.
     notFoundError:
       description: Элемент не найден.
+    invalidIdError:
+      description: Неверный формат id
 
   schemas:
     offerPreview:
@@ -599,8 +643,6 @@ components:
         email:
           type: string
           example: keks@htmlacademy.ru
-        avatar:
-          type: string
         type:
           $ref: "#/components/schemas/userType"
         password:
@@ -629,6 +671,7 @@ components:
 
     loginUser:
       type: object
+      description: Данные для аутентификации
       required:
         - email
         - password
@@ -639,6 +682,16 @@ components:
         password:
           type: string
           example: 123456
+
+    loggedUser:
+      type: object
+      description: JWT токен и почта аутентифицированного пользователя
+      properties:
+        token:
+          type: string
+        email:
+          type: string
+          example: keks@htmlacademy.ru
 
     comment:
       type: object
@@ -672,11 +725,11 @@ components:
           minLength: 5
           maxLength: 1024
           example: Some text for this comment.
-        rating:   # TODO как понял, это рейтинг для оффера. надо уточнить
+        rating:
           type: number
           minimum: 1
           maximum: 5
-          example: 4.6
+          example: 4
 
     city:
       type: string
@@ -737,10 +790,3 @@ components:
         - default
         - pro
       example: default
-
-    authToken:
-      type: object
-      description: Токен авторизации
-      properties:
-        token:
-          type: string

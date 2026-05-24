@@ -18,13 +18,13 @@ export class DefaultCommentService implements CommentService {
     const comment = await this.commentModel.create({ offerId, ...dto });
     this.logger.info(`New comment created: ${dto.text}`);
 
-    return comment.populate(['offerId', 'userId']); // TODO а нужен ли populate для offerId?
+    return comment.populate(['userId']);
   }
 
   public async findByOfferId(offerId: string): Promise<DocumentType<CommentEntity>[]> {
     return this.commentModel
       .find({offerId})
-      .populate(['offerId', 'userId']) // TODO а нужен ли populate для offerId?
+      .populate(['userId'])
       .sort({ createdAt: SortType.Down })
       .limit(DEFAULT_COMMENT_COUNT)
       .exec();
