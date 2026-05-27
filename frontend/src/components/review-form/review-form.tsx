@@ -1,11 +1,11 @@
 import type { ChangeEvent, FormEvent } from 'react';
 import { Fragment, useState, useEffect } from 'react';
 
-import type { CommentAuth } from '../../types/types';
+import type { NewComment } from '../../types/types';
 import { STARS_COUNT, MIN_COMMENT_LENGTH, MAX_COMMENT_LENGTH, SubmitStatus } from '../../const';
 
 type ReviewFormProps = {
-  onSubmit: (formData: Omit<CommentAuth, 'id'>) => void;
+  onSubmit: (formData: NewComment) => void;
   submitStatus: SubmitStatus;
 }
 

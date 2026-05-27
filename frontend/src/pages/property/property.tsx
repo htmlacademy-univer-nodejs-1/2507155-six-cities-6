@@ -14,7 +14,7 @@ import {
 } from '../../store/action';
 import Spinner from '../../components/spinner/spinner';
 import { capitalize, getStarsWidth, pluralize } from '../../utils';
-import { CommentAuth } from '../../types/types';
+import { NewComment } from '../../types/types';
 import { getIsAuthorized } from '../../store/user-process/selectors';
 import {
   getIsOfferLoading,
@@ -25,7 +25,7 @@ import {
 } from '../../store/site-data/selectors';
 import { getUser } from '../../store/user-process/selectors';
 import Bookmark from '../../components/bookmark/bookmark';
-import { AppRoute } from '../../const';
+import { AppRoute, CityLocation, UserType } from '../../const';
 
 const Property = (): JSX.Element | null => {
   const params = useParams();
@@ -78,10 +78,12 @@ const Property = (): JSX.Element | null => {
     location,
   } = offer;
   const isAuthor = host.email === user;
+  const isPro = host.type === UserType.Pro;
+
   const locations = premiumOffers.map(
-    ({ id: premiumId, location: premiumLocation }) => ({
+    ({ id: premiumId, cityName }) => ({
       id: premiumId,
-      ...premiumLocation,
+      ...(CityLocation[cityName]),
     })
   );
   locations.push({ id, ...location });
@@ -90,7 +92,7 @@ const Property = (): JSX.Element | null => {
     dispatch(deleteOffer(id));
   };
 
-  const handleFormSubmit = (formData: Omit<CommentAuth, 'id'>) => {
+  const handleFormSubmit = (formData: NewComment) => {
     dispatch(postComment({ id, ...formData }));
   };
 
@@ -176,7 +178,7 @@ const Property = (): JSX.Element | null => {
                 <div className="property__host-user user">
                   <div
                     className={`property__avatar-wrapper${
-                      host.isPro ? ' property__avatar-wrapper--pro' : ''
+                      isPro ? ' property__avatar-wrapper--pro' : ''
                     } user__avatar-wrapper`}
                   >
                     <img
@@ -188,7 +190,7 @@ const Property = (): JSX.Element | null => {
                     />
                   </div>
                   <span className="property__user-name">{host.name}</span>
-                  {host.isPro && (
+                  {isPro && (
                     <span className="property__user-status">Pro</span>
                   )}
                 </div>
@@ -221,6 +223,7 @@ const Property = (): JSX.Element | null => {
                 <Card
                   key={premiumOffer.id}
                   {...premiumOffer}
+                  cityName={premiumOffer.cityName}
                   classPrefix="near-places"
                 />
               ))}

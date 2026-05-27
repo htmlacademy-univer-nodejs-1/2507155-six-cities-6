@@ -18,6 +18,7 @@ enum FormFieldName {
   maxAdults = 'maxAdults',
   price = 'price',
   good = 'good-',
+  image = 'image'
 }
 
 const getGoods = (
@@ -26,7 +27,7 @@ const getGoods = (
   const chosenGoods: string[] = [];
   for (const entry of entries) {
     if (entry[0].startsWith(FormFieldName.good)) {
-      chosenGoods.push(entry[0].slice(5));
+      chosenGoods.push(entry[0].slice(FormFieldName.good.length));
     }
   }
   return chosenGoods;
@@ -42,6 +43,18 @@ const getCity = (cityName: FormDataEntryValue | null): City => {
   }
 
   return { name: CITIES[0], location: CityLocation[CITIES[0]] };
+};
+
+const getImages = (
+  entries: IterableIterator<[string, FormDataEntryValue]>
+): string[] => {
+  const enteredImages: string[] = [];
+  for (const entry of entries) {
+    if (entry[0].startsWith(FormFieldName.image) && typeof entry[1] === 'string') {
+      enteredImages.push(entry[1]);
+    }
+  }
+  return enteredImages;
 };
 
 type OfferFormProps<T> = {
@@ -65,6 +78,7 @@ const OfferForm = <T extends Offer | NewOffer>({
     price,
     goods: chosenGoods,
     location,
+    images
   } = offer;
   const [chosenLocation, setChosenLocation] = useState(location);
   const [chosenCity, setChosenCity] = useState(city);
@@ -98,6 +112,7 @@ const OfferForm = <T extends Offer | NewOffer>({
       price: Number(formData.get(FormFieldName.price)),
       goods: getGoods(formData.entries()),
       location: chosenLocation,
+      images: getImages(formData.entries()),
     };
 
     onSubmit(data);
@@ -164,6 +179,26 @@ const OfferForm = <T extends Offer | NewOffer>({
           defaultValue={previewImage}
         />
       </div>
+      <fieldset className="images-fieldset">
+        {images.map((image, index) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <div key={`${image}-${index}`} className="form__input-wrapper">
+            <label htmlFor={`image-${index}`} className="offer-form__label">
+          Offer Image #{index + 1}
+            </label>
+            <input
+              className="form__input offer-form__text-input"
+              type="url"
+              placeholder="Offer image"
+              name={`${FormFieldName.image}-${index}`}
+              id={`image-${index}`}
+              required
+              defaultValue={image}
+            />
+          </div>
+        ))}
+
+      </fieldset>
       <fieldset className="type-fieldset">
         <div className="form__input-wrapper">
           <label htmlFor="type" className="type-fieldset__label">

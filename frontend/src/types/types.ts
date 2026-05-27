@@ -1,4 +1,4 @@
-import { CITIES, Sorting, TYPES } from '../const';
+import { CITIES, Sorting, TYPES, UserType } from '../const';
 
 export type CityName = typeof CITIES[number];
 export type Type = typeof TYPES[number];
@@ -17,14 +17,15 @@ export type City = {
 export type User = {
   name: string;
   avatarUrl: string;
-  isPro: boolean;
+  type: UserType;
   email: string;
 };
 
+export type NewComment = Pick<Comment, 'comment' | 'rating'>;
 export type UserAuth = Pick<User, 'email'> & { password: string };
-export type CommentAuth = Pick<Comment, 'comment' | 'rating'> &
+export type CommentAuth = NewComment &
   Pick<Offer, 'id'>;
-export type FavoriteAuth = Pick<Offer, 'id'> & { status: 1 | 0 };
+export type FavoriteAuth = Offer['id'];
 export type UserRegister = Omit<User, 'avatarUrl'> &
   Pick<UserAuth, 'password'> & { avatar?: File };
 
@@ -55,6 +56,8 @@ export type Offer = {
   maxAdults: number;
 };
 
+export type OfferPreview = Pick<Offer, 'id' | 'price' | 'rating' | 'title' | 'isPremium' | 'isFavorite' | 'previewImage' | 'type'> & { cityName: CityName };
+
 export type NewOffer = {
   title: string;
   description: string;
@@ -67,4 +70,5 @@ export type NewOffer = {
   price: number;
   goods: string[];
   location: Location;
+  images: string[];
 };

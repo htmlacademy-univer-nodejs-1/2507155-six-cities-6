@@ -1,5 +1,5 @@
 import { SubmitStatus } from '../../const';
-import type { CommentAuth, Comment } from '../../types/types';
+import type { Comment, NewComment } from '../../types/types';
 
 import ReviewForm from '../review-form/review-form';
 import Review from '../review/review';
@@ -7,7 +7,7 @@ import Review from '../review/review';
 type ReviewListProps = {
     reviews: Comment[];
     isAuthorized: boolean;
-    onSubmit: (formData: Omit<CommentAuth, 'id'>) => void;
+    onSubmit: (formData: NewComment) => void;
     submitStatus: SubmitStatus;
 }
 
