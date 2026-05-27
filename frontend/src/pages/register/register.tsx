@@ -6,7 +6,7 @@ import type { CityName, UserRegister } from '../../types/types';
 import { useAppDispatch } from '../../hooks';
 import { registerUser } from '../../store/action';
 import { getRandomElement } from '../../utils';
-import { AppRoute, CITIES } from '../../const';
+import { AppRoute, CITIES, UserType } from '../../const';
 import { setCity } from '../../store/site-process/site-process';
 
 const Register = (): JSX.Element => {
@@ -27,6 +27,8 @@ const Register = (): JSX.Element => {
     const formData = new FormData(form) as Iterable<[UserRegister]>;
     const data = Object.fromEntries(formData);
 
+    data.type = data.isPro ? UserType.Pro : UserType.Default;
+    delete data.isPro;
     dispatch(registerUser(data));
   };
 

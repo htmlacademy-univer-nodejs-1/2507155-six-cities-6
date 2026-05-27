@@ -45,10 +45,6 @@ export class DefaultUserService implements UserService {
     return this.create(dto, salt);
   }
 
-  // TODO getStatus
-
-  // TODO хоть в тз отдельно не сказано про обновление пользователя, я уверен, что такой функционал пригодится
-  // добавить в спеку
   public async updateById(userId: string, dto: UpdateUserDto): Promise<DocumentType<UserEntity> | null> {
     return this.userModel
       .findByIdAndUpdate(userId, dto, { new: true })
