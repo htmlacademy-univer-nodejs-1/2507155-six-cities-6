@@ -59,7 +59,7 @@ export class OfferController extends BaseController {
     await this.offerService.deleteById(params.offerId);
 
     await this.commentService.deleteByOfferId(params.offerId);
-    this.noContent(res, void 0); // TODO почему то если тут будет offer, то после отправки запроса приложуха зависает
+    this.noContent(res, void 0);
   }
 
   public async update({ params, body }: Request<OfferIdRequestParam, unknown, UpdateOfferDto>, res: Response): Promise<void> {

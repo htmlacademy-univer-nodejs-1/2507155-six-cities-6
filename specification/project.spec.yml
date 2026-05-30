@@ -381,9 +381,6 @@ paths:
         "404":
           description: Пользователь не найден
 
-  # TODO patch для юзера?
-  # TODO delete для юзера??
-
 
 components:
   securitySchemes:

@@ -10,8 +10,6 @@ export class CreateUserDto {
   @IsEmail({}, { message: UserValidationMessages.email.invalidFormat })
   public email: string;
 
-  // TODO наверн фронт будет отправлять дополнительный запрос на загрузку аватарки
-
   @IsEnum(UserType, { message: UserValidationMessages.userType.invalidFormat })
   public type: UserType;
 
