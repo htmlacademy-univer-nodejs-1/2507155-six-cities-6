@@ -30,8 +30,9 @@ export class DefaultOfferService implements OfferService {
   public async findById(offerId: string, userId?: string): Promise<DocumentType<OfferEntity> | null> {
     const [offer] = await this.offerModel.aggregate([
       { $match: { _id: new Types.ObjectId(offerId) } },
-      ...this.userPopulatePipeline(),
-      ...this.getFavoritePipeline(userId)
+      ...this.userPopulatePipeline(), // TODO если пользователя не существует, то вернет null
+      ...this.getFavoritePipeline(userId),
+      { $addFields: { id: { $toString: '$_id' } } }
     ]);
 
     return offer ?? null;
@@ -43,7 +44,8 @@ export class DefaultOfferService implements OfferService {
       .aggregate([
         { $sort: { createdAt: SortType.Down } },
         { $limit: limit },
-        ...this.getFavoritePipeline(userId)
+        ...this.getFavoritePipeline(userId),
+        { $addFields: { id: { $toString: '$_id' } } }
       ])
       .exec();
   }
@@ -67,7 +69,8 @@ export class DefaultOfferService implements OfferService {
         { $match: { city, isPremium: true } },
         { $sort: { createdAt: SortType.Down } },
         { $limit: PREMIUM_OFFER_COUNT },
-        ...this.getFavoritePipeline(userId)
+        ...this.getFavoritePipeline(userId),
+        { $addFields: { id: { $toString: '$_id' } } }
       ])
       .exec();
   }
@@ -76,7 +79,8 @@ export class DefaultOfferService implements OfferService {
     return this.offerModel
       .aggregate([
         ...this.getFavoritePipeline(userId),
-        { $match: { isFavorite: true } }
+        { $match: { isFavorite: true } },
+        { $addFields: { id: { $toString: '$_id' } } }
       ])
       .exec();
   }
@@ -124,7 +128,7 @@ export class DefaultOfferService implements OfferService {
 
   public async exists(documentId: string): Promise<boolean> {
     return (await this.offerModel
-      .exists({_id: documentId})) !== null;
+      .exists({_id: new Types.ObjectId(documentId)})) !== null;
   }
 
   public async getOwnerId(documentId: string): Promise<string | null> {
@@ -150,6 +154,11 @@ export class DefaultOfferService implements OfferService {
       },
       {
         $unwind: '$userId'
+      },
+      {
+        $addFields: {
+          'userId.id': { $toString: '$userId._id' }
+        }
       }
     ];
   }

@@ -376,11 +376,10 @@ paths:
                     example: uploads/5GWY6_SgIrPwRo-cRfGyS.jpg
         "400":
           description: "#/components/responses/invalidIdError"
+        "403":
+          description: Загружать аватар можно только при регистрации
         "404":
           description: Пользователь не найден
-
-  # TODO patch для юзера?
-  # TODO delete для юзера??
 
 
 components:

@@ -108,7 +108,7 @@ Content-Type: application/json
 
 {
   "text": "Как обстоят дела с коробками? Фирменная упаковка сохранена?",
-  "rating": 4.4,
+  "rating": 4,
 }
 
 ###

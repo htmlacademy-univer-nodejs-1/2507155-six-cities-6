@@ -30,8 +30,8 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({ required: true, default: false })
   public isPremium: boolean;
 
-  @prop({ required: true, min: 1, max: 5, default: 1 }) // TODO временный костыль
-  public rating: number; // TODO при создании предложения рейтинг отсутствует
+  @prop({ required: true, min: 1, max: 5, default: 5 })
+  public rating: number; // TODO при создании предложения рейтинг отсутствует (проблема еще актуальна)
 
   @prop({ required: true, type: () => String, enum: HousingType })
   public housingType: HousingType;
