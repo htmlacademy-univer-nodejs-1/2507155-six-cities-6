@@ -31,7 +31,7 @@ export class UserController extends BaseController {
     this.addRoute({ path: '/register', method: HttpMethod.Post, handler: this.create, middlewares: [new PrivateRouteMiddleware(true), new ValidateDtoMiddleware(CreateUserDto)] });
     this.addRoute({ path: '/login', method: HttpMethod.Post, handler: this.login, middlewares: [new PrivateRouteMiddleware(true), new ValidateDtoMiddleware(LoginUserDto)] });
     this.addRoute({ path: '/login', method: HttpMethod.Get, handler: this.checkAuthenticate, middlewares: [new PrivateRouteMiddleware()] });
-    this.addRoute({ path: '/:userId/avatar', method: HttpMethod.Post, handler: this.uploadAvatar, middlewares: [new ValidateObjectIdMiddleware('userId'), new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'avatar'), new DocumentExistsMiddleware(this.userService, 'User', 'userId')] }); // TODO DocumentOwnerMiddleware? (пока не понятно)
+    this.addRoute({ path: '/:userId/avatar', method: HttpMethod.Post, handler: this.uploadAvatar, middlewares: [new PrivateRouteMiddleware(true), new ValidateObjectIdMiddleware('userId'), new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'avatar'), new DocumentExistsMiddleware(this.userService, 'User', 'userId')] });
   }
 
   public async create({ body }: CreateUserRequest, res: Response): Promise<void> {

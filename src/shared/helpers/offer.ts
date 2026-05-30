@@ -11,6 +11,7 @@ export function createOffer(offerData: string): Offer {
     return { latitude, longitude };
   };
 
+  const housingTypeCapitalize = housingType.charAt(0).toUpperCase() + housingType.slice(1);
   return {
     title,
     description,
@@ -18,7 +19,7 @@ export function createOffer(offerData: string): Offer {
     previewImage,
     housingImages: images.split(';'),
     isPremium: parseBoolean(isPremium),
-    housingType: HousingType[housingType as keyof typeof HousingType], // TODO сделать маппинг строк в энумы
+    housingType: HousingType[housingTypeCapitalize as keyof typeof HousingType], // TODO сделать маппинг строк в энумы
     roomsCount: parseInt(roomsCount),
     guestsCount: parseInt(guestsCount),
     price: parseInt(price),
